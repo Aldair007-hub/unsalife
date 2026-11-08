@@ -117,6 +117,7 @@ Las historias se priorizan según el valor para el usuario, el riesgo y las depe
 - Implementar las alertas al 80 % del límite y al superarlo.
 - Probar los casos correctos y los casos de error.
 - Preparar el script, las capturas de ejecución y las evidencias de la semana.
+
 **Entregable:** script ejecutable de gastos y presupuestos, con sus evidencias (captura de ejecución, captura del meet, pruebas realizadas y enlace al repositorio).
  
 #### 4.1.4 Resultado esperado
