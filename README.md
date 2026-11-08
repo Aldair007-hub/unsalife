@@ -7,8 +7,8 @@ Clasificar obstáculos por tipo y severidad.
 Registrar evidencias y observaciones.
 Priorizar intervenciones según criterios configurables.
 Consultar reportes de lugares evaluados y mejoras pendientes.
-#Equipo
 
+# Equipo
 | Integrante | Rol |
 | :--- | :--- |
 | Piero Andree Zamora Aquino | Líder |
