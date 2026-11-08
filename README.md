@@ -1,5 +1,5 @@
 # Proyecto unsalife
-Descripcion del proyecto:
+# Descripcion del proyecto:
 Ayudar a documentar barreras de accesibilidad en edificios, calles y espacios públicos, con el fin de priorizar mejoras.
 Funcionalidades
 Registrar lugares y barreras de accesibilidad.
@@ -7,6 +7,15 @@ Clasificar obstáculos por tipo y severidad.
 Registrar evidencias y observaciones.
 Priorizar intervenciones según criterios configurables.
 Consultar reportes de lugares evaluados y mejoras pendientes.
+#Equipo
+
+| Integrante | Rol |
+| :--- | :--- |
+| Piero Andree Zamora Aquino | Líder |
+| Ronald David Jala Paricanaza | --- |
+| Kevin Aldair Solis Florez | --- |
+
+
 
 
 UML
