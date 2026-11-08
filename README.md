@@ -170,7 +170,7 @@ Captura del primer meet (reunión del 7 de noviembre de 2026):
 
 Captura del UML del equipo:
 
-<img width="1135" height="731" alt="WhatsApp Image 2026-11-07 at 20 09 07" src="https://github.com/user-attachments/assets/3a9104bc-eb73-4567-bf65-a2b7682474b2" />
+![Diagrama de clases](img/Diagrama%20de%20clases%20UnsaLife.jpg)
 
 **Semanas 2, 3 y 4:** pendientes.
 
