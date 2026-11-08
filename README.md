@@ -1,4 +1,14 @@
 # Proyecto unsalife
+Descripcion del proyecto:
+Ayudar a documentar barreras de accesibilidad en edificios, calles y espacios públicos, con el fin de priorizar mejoras.
+Funcionalidades
+Registrar lugares y barreras de accesibilidad.
+Clasificar obstáculos por tipo y severidad.
+Registrar evidencias y observaciones.
+Priorizar intervenciones según criterios configurables.
+Consultar reportes de lugares evaluados y mejoras pendientes.
+
+
 UML
 
 <img width="1135" height="731" alt="WhatsApp Image 2026-11-07 at 20 09 07" src="https://github.com/user-attachments/assets/3a9104bc-eb73-4567-bf65-a2b7682474b2" />
