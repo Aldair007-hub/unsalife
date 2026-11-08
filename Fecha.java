@@ -35,8 +35,6 @@ public class Fecha {
         }
         return dias[mes - 1];
     }
-
-    /** Una fecha es válida si el año está entre 2000 y 2100, el mes entre 1 y 12 y el día existe en ese mes. */
     public static boolean esValida(int dia, int mes, int anio) {
         if (anio < 2000 || anio > 2100) {
             return false;
@@ -46,8 +44,6 @@ public class Fecha {
         }
         return dia >= 1 && dia <= diasDelMes(mes, anio);
     }
-
-    /** Texto "mm/aaaa", por ejemplo "11/2026". */
     public static String textoMesAnio(int mes, int anio) {
         return dosDigitos(mes) + "/" + anio;
     }
@@ -61,7 +57,6 @@ public class Fecha {
 
     // ---------- Comparaciones ----------
 
-    /** Retorna un número negativo si esta fecha es anterior, 0 si son iguales y positivo si es posterior. */
     public int comparar(Fecha otra) {
         if (anio != otra.anio) {
             return anio - otra.anio;
@@ -80,7 +75,6 @@ public class Fecha {
         return comparar(otra) > 0;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -92,12 +86,10 @@ public class Fecha {
         return dia == otra.dia && mes == otra.mes && anio == otra.anio;
     }
 
-    @Override
     public int hashCode() {
         return dia + mes * 31 + anio * 372;
     }
 
-    @Override
     public String toString() {
         return dosDigitos(dia) + "/" + dosDigitos(mes) + "/" + anio;
     }
