@@ -71,6 +71,41 @@ public class Estudiante {
         reportes.add(reporte);
         return reporte;
     }
+    private ArrayList<Presupuesto> presupuestos = new ArrayList<>();
+
+    public ArrayList<Presupuesto> getPresupuestos() {
+        return presupuestos;
+    }
+
+    public Presupuesto buscarPresupuesto(Fecha fecha) {
+        int mes = fecha.getMes();
+        int anio = fecha.getAnio();
+        for (Presupuesto p : presupuestos) {
+            if (p.getMes() == mes && p.getAnio() == anio) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public boolean crearPresupuesto(Presupuesto p) {
+        Fecha fecha = new Fecha(p.getMes(), p.getAnio());
+        if (buscarPresupuesto(fecha) != null) {
+            return false;
+        }
+        presupuestos.add(p);
+        return true;
+    }
+
+    public boolean registrarGasto(Gasto g) {
+        Fecha fecha = new Fecha(g.getFecha().getMes(), g.getFecha().getAnio());
+        Presupuesto p = buscarPresupuesto(fecha);
+        if (p == null) {
+            return false;
+        }
+        p.agregarGasto(g);
+        return true;
+    }
 
     public String toString() {
         return idEstudiante + " | " + nombre + " | " + correo;
