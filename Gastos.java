@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Gasto {
 
     private String idGasto;
@@ -5,6 +8,7 @@ public class Gasto {
     private String categoria;
     private Fecha fecha;
     private String descripcion;
+    private Date fechaRegistro; 
 
     public Gasto(String idGasto, double monto, String categoria, Fecha fecha, String descripcion) {
         this.idGasto = idGasto;
@@ -12,6 +16,7 @@ public class Gasto {
         this.categoria = categoria;
         this.fecha = fecha;
         this.descripcion = descripcion;
+        this.fechaRegistro = new Date();
     }
 
     public String getIdGasto() {
@@ -46,9 +51,13 @@ public class Gasto {
         this.descripcion = descripcion;
     }
 
-    @Override
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
     public String toString() {
-        String texto = idGasto + " | " + fecha + " | " + categoria + " | S/ " + (Math.round(monto * 100) / 100.0);
+        String texto = idGasto + " | " + fecha + " | " + categoria + " | S/ " + (Math.round(monto * 100) / 100.0)
+                + " | registrado " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaRegistro);
         if (!descripcion.isEmpty()) {
             texto += " | " + descripcion;
         }
