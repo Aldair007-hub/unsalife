@@ -169,6 +169,10 @@ Captura del primer meet (reunión del 7 de noviembre de 2026):
 
 <img width="1917" height="972" alt="Captura de pantalla 2026-11-07 201911" src="https://github.com/user-attachments/assets/97182942-e432-4c17-abb8-80577186be23" />
 
+Captura del segundo meet (reunión del 8 de noviembre de 2026):
+
+<img width="1919" height="978" alt="Captura de pantalla 2026-11-08 205808" src="https://github.com/user-attachments/assets/95dc6e44-a5a3-47f0-8063-a8b8a641aa62" />
+
 Captura del UML del equipo:
 
 ![Diagrama de clases](img/Diagrama%20de%20clases%20UnsaLife.jpg)
