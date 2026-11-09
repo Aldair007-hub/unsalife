@@ -71,6 +71,9 @@ public class Estudiante {
         reportes.add(reporte);
         return reporte;
     }
+    public String toString() {
+        return idEstudiante + " | " + nombre + " | " + correo;
+    }
     private ArrayList<Presupuesto> presupuestos = new ArrayList<>();
 
     public ArrayList<Presupuesto> getPresupuestos() {
@@ -106,7 +109,22 @@ public class Estudiante {
         p.agregarGasto(g);
         return true;
     }
+    private ArrayList<MetaAcademica> metas = new ArrayList<>();
 
-    public String toString() {
-        return idEstudiante + " | " + nombre + " | " + correo;
+    public ArrayList<MetaAcademica> getMetas() {
+        return metas;
     }
+
+    public void crearMeta(MetaAcademica m) {
+        metas.add(m);
+    }
+
+    public MetaAcademica buscarMeta(String idMeta) {
+        for (MetaAcademica m : metas) {
+            if (m.getIdMeta().equalsIgnoreCase(idMeta)) {
+                return m;
+            }
+        }
+        return null;
+    }
+}
