@@ -35,8 +35,6 @@ public class Fecha {
         return anio;
     }
 
-    // ---------- Métodos de clase (static): validación de fechas ----------
-
     public static boolean esBisiesto(int anio) {
         return (anio % 4 == 0 && anio % 100 != 0) || anio % 400 == 0;
     }
@@ -69,8 +67,6 @@ public class Fecha {
         }
         return "" + numero;
     }
-
-    // ---------- Comparaciones ----------
 
     public int comparar(Fecha otra) {
         if (anio != otra.anio) {

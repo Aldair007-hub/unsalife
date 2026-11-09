@@ -3,12 +3,12 @@ import java.util.HashMap;
 
 public class Estudiante {
 
-  
-
     private String idEstudiante;
     private String nombre;
     private String correo;
     private ArrayList<ReporteMensual> reportes = new ArrayList<>();
+    private ArrayList<Presupuesto> presupuestos = new ArrayList<>();
+    private ArrayList<MetaAcademica> metas = new ArrayList<>();
 
     public Estudiante(String idEstudiante, String nombre, String correo) {
         this.idEstudiante = idEstudiante;
@@ -74,7 +74,6 @@ public class Estudiante {
     public String toString() {
         return idEstudiante + " | " + nombre + " | " + correo;
     }
-    private ArrayList<Presupuesto> presupuestos = new ArrayList<>();
 
     public ArrayList<Presupuesto> getPresupuestos() {
         return presupuestos;
@@ -109,7 +108,6 @@ public class Estudiante {
         p.agregarGasto(g);
         return true;
     }
-    private ArrayList<MetaAcademica> metas = new ArrayList<>();
 
     public ArrayList<MetaAcademica> getMetas() {
         return metas;

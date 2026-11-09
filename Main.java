@@ -17,7 +17,6 @@ public class Main {
       
         Fecha hoy = new Fecha(new Date());
         System.out.println("Fecha de hoy: " + hoy);
-        // Menú principal
         int opcion;
         do {
             System.out.println("\n---------- MENÚ PRINCIPAL ----------");
