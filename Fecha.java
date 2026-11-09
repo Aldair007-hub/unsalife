@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Fecha {
 
     private int dia;
@@ -8,6 +11,16 @@ public class Fecha {
         this.dia = dia;
         this.mes = mes;
         this.anio = anio;
+    }
+
+    public Fecha(int mes, int anio){
+        this(1, mes, anio);
+    }
+
+    public Fecha(Date fecha) {
+        this.dia = Integer.parseInt(new SimpleDateFormat("dd").format(fecha));
+        this.mes = Integer.parseInt(new SimpleDateFormat("MM").format(fecha));
+        this.anio = Integer.parseInt(new SimpleDateFormat("yyyy").format(fecha));
     }
 
     public int getDia() {
@@ -35,6 +48,7 @@ public class Fecha {
         }
         return dias[mes - 1];
     }
++
     public static boolean esValida(int dia, int mes, int anio) {
         if (anio < 2000 || anio > 2100) {
             return false;
@@ -44,6 +58,7 @@ public class Fecha {
         }
         return dia >= 1 && dia <= diasDelMes(mes, anio);
     }
+
     public static String textoMesAnio(int mes, int anio) {
         return dosDigitos(mes) + "/" + anio;
     }
@@ -84,10 +99,6 @@ public class Fecha {
         }
         Fecha otra = (Fecha) o;
         return dia == otra.dia && mes == otra.mes && anio == otra.anio;
-    }
-
-    public int hashCode() {
-        return dia + mes * 31 + anio * 372;
     }
 
     public String toString() {
