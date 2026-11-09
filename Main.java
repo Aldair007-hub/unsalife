@@ -309,3 +309,192 @@ public class Main {
             System.out.println("\n  Gastos de ejemplo cargados en " + Fecha.textoMesAnio(hoy.getMes(), hoy.getAnio()) + ".");
         }
     }
+
+    public static void menuMetas(Scanner scanner, Estudiante estudiante, Fecha hoy,
+            HashMap<String, Integer> contadores) {
+        int opcion;
+        do {
+            System.out.println("\n--- Metas académicas y tareas ---");
+            System.out.println("1. Crear meta académica");
+            System.out.println("2. Agregar tarea a una meta");
+            System.out.println("3. Ver metas y sus tareas");
+            System.out.println("4. Marcar tarea como completada");
+            System.out.println("0. Volver");
+            System.out.print("Elige una opción: ");
+            opcion = Integer.parseInt(scanner.nextLine());
+            switch (opcion) {
+                case 1:
+                    crearMeta(scanner, estudiante, contadores);
+                    break;
+                case 2:
+                    agregarTarea(scanner, estudiante, contadores);
+                    break;
+                case 3:
+                    listarMetas(estudiante, hoy);
+                    break;
+                case 4:
+                    completarTarea(scanner, estudiante, hoy);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("  Opción no válida. Intenta de nuevo.");
+                    break;
+            }
+        } while (opcion != 0);
+    }
+
+    public static void crearMeta(Scanner scanner, Estudiante estudiante, HashMap<String, Integer> contadores) {
+        System.out.println("\n[Nueva meta académica]");
+        System.out.print("Título de la meta: ");
+        String titulo = scanner.nextLine().trim();
+        System.out.print("Materia: ");
+        String materia = scanner.nextLine().trim();
+        System.out.println("Fecha límite de la meta:");
+        MetaAcademica m = new MetaAcademica(generarId("META", contadores), titulo, materia, lectorFecha(scanner));
+        estudiante.crearMeta(m);
+        System.out.println("  Meta " + m.getIdMeta() + " creada.");
+    }
+
+    public static void agregarTarea(Scanner scanner, Estudiante estudiante, HashMap<String, Integer> contadores) {
+        if (estudiante.getMetas().isEmpty()) {
+            System.out.println("\n  Primero crea una meta académica.");
+        } else {
+            System.out.println("\n[Mis metas]");
+            for (MetaAcademica m : estudiante.getMetas()) {
+                System.out.println("  " + m);
+            }
+            System.out.print("Id de la meta (ej. META-1): ");
+            String idMeta = scanner.nextLine().trim();
+            MetaAcademica meta = estudiante.buscarMeta(idMeta);
+            if (meta == null) {
+                System.out.println("  No existe una meta con ese id.");
+            } else {
+                String titulo = scanner.nextLine().trim();
+                System.out.print("Descripción (Enter para omitir): ");
+                String descripcion = scanner.nextLine().trim();
+                System.out.println("Fecha límite de la tarea:");
+                Fecha fechaLimite = lectorFecha(scanner);
+        
+                if (fechaLimite.esPosteriorA(meta.getFechaLimite())) {
+                    System.out.println("  Nota: la tarea vence después de la fecha límite de la meta.");
+                }
+                Tarea t = new Tarea(generarId("TAR", contadores), titulo, descripcion, fechaLimite);
+                meta.agregarTarea(t);
+                System.out.println("  Tarea " + t.getIdTarea() + " agregada a " + meta.getIdMeta() + ".");
+            }
+    
+        }
+    }
+
+    public static void listarMetas(Estudiante estudiante, Fecha hoy) {
+        System.out.println("\n[Mis metas académicas]");
+        if (estudiante.getMetas().isEmpty()) {
+            System.out.println("  (ninguna)");
+        }
+        for (MetaAcademica m : estudiante.getMetas()) {
+            System.out.println("  " + m);
+            if (m.getTareas().isEmpty()) {
+                System.out.println("      (sin tareas)");
+            }
+            for (Tarea t : m.getTareas()) {
+                String aviso = "";
+                if (t.estaVencida(hoy)) {
+                    aviso = " [VENCIDA]";
+                }
+                System.out.println("      " + t + aviso);
+            }
+        }
+    }
+
+    public static void completarTarea(Scanner scanner, Estudiante estudiante, Fecha hoy) {
+        if (estudiante.getMetas().isEmpty()) {
+            System.out.println("\n  Aún no tienes metas.");
+        } else {
+            listarMetas(estudiante, hoy);
+            System.out.print("Id de la meta (ej. META-1): ");
+            String idMeta = scanner.nextLine().trim();
+            MetaAcademica meta = estudiante.buscarMeta(idMeta);
+            if (meta == null) {
+                System.out.println("  No existe una meta con ese id.");
+            } else {
+                System.out.print("Id de la tarea (ej. TAR-1): ");
+                String idTarea = scanner.nextLine().trim();
+                Tarea tarea = meta.buscarTarea(idTarea);
+                if (tarea == null) {
+                    System.out.println("  Esa meta no tiene una tarea con ese id.");
+                } else if (tarea.isCompletada()) {
+                    System.out.println("  Esa tarea ya estaba completada.");
+                } else {
+                    tarea.marcarCompletada();
+                    meta.actualizarProgreso();
+                    System.out.println("  ¡Tarea completada! Progreso de la meta: " + (Math.round(meta.getProgreso() * 10) / 10.0) + "%");
+                    if (meta.estaCumplida()) {
+                        System.out.println("  ¡Felicitaciones, cumpliste la meta \"" + meta.getTitulo() + "\"!");
+                    }
+                }
+            }
+        }
+    }
+
+    public static void cargarMetasEjemplo(Estudiante estudiante, Fecha hoy, HashMap<String, Integer> contadores) {
+        if (!estudiante.getMetas().isEmpty()) {
+            System.out.println("  Ya tienes metas; no se cargaron metas de ejemplo.");
+        } else {
+            int anio = hoy.getAnio();
+            MetaAcademica m1 = new MetaAcademica(generarId("META", contadores), "Aprobar Desarrollo de Software OO", "Desarrollo de Software OO", new Fecha(10, 12, anio));
+            Tarea t1 = new Tarea(generarId("TAR", contadores), "Repasar herencia y polimorfismo", "", new Fecha(20, hoy.getMes(), anio));
+            Tarea t2 = new Tarea(generarId("TAR", contadores), "Practicar diagramas UML", "", new Fecha(25, hoy.getMes(), anio));
+            t1.marcarCompletada();
+            m1.agregarTarea(t1);
+            m1.agregarTarea(t2);
+            estudiante.crearMeta(m1);
+    
+            MetaAcademica m2 = new MetaAcademica(generarId("META", contadores), "Entregar proyecto UnsaLife", "Desarrollo de Software OO", new Fecha(28, hoy.getMes(), anio));
+            Tarea t3 = new Tarea(generarId("TAR", contadores), "Versión consola", "", new Fecha(15, hoy.getMes(), anio));
+            t3.marcarCompletada();
+            m2.agregarTarea(t3);
+            estudiante.crearMeta(m2);
+    
+            System.out.println("  Metas y tareas de ejemplo cargadas.");
+        }
+    }
+
+    public static Fecha lectorMesAnio(Scanner scanner){
+        int mes;
+        do {
+            System.out.print("  Mes (1-12): ");
+            mes = Integer.parseInt(scanner.nextLine());
+            if (mes < 1 || mes > 12) {
+                System.out.println("  El mes debe estar entre 1 y 12.");
+            }
+        } while (mes < 1 || mes > 12);
+
+        int anio;
+        do {
+            System.out.print("  Año (2000-2100): ");
+            anio = Integer.parseInt(scanner.nextLine());
+            if (anio < 2000 || anio > 2100) {
+                System.out.println("  El año debe estar entre 2000 y 2100.");
+            }
+        } while (anio < 2000 || anio > 2100);
+
+        return new Fecha(1, mes, anio);
+    }
+
+    public static Fecha lectorFecha(Scanner scanner){
+        Fecha mesAnio = lectorMesAnio(scanner);
+        int mes = mesAnio.getMes();
+        int anio = mesAnio.getAnio();
+        int dia;
+        do {
+            System.out.print("  Día (1-" + Fecha.diasDelMes(mes, anio) + "): ");
+            dia = Integer.parseInt(scanner.nextLine());
+            if (dia < 1 || dia > Fecha.diasDelMes(mes, anio)) {
+                System.out.println("  Ese mes tiene solo " + Fecha.diasDelMes(mes, anio) + " días.");
+            }
+        } while (dia < 1 || dia > Fecha.diasDelMes(mes, anio));
+
+        return new Fecha(dia, mes, anio);
+    }
+}
