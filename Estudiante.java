@@ -7,8 +7,6 @@ public class Estudiante {
     private String nombre;
     private String correo;
     private ArrayList<ReporteMensual> reportes = new ArrayList<>();
-    private ArrayList<Presupuesto> presupuestos = new ArrayList<>();
-    private ArrayList<MetaAcademica> metas = new ArrayList<>();
 
     public Estudiante(String idEstudiante, String nombre, String correo) {
         this.idEstudiante = idEstudiante;
@@ -31,7 +29,6 @@ public class Estudiante {
     public ArrayList<ReporteMensual> getReportes() {
         return reportes;
     }
-
 
     public ReporteMensual generarReporte(Fecha fecha) {
         int mes = fecha.getMes();
@@ -58,10 +55,16 @@ public class Estudiante {
             }
         }
 
-        String id = "REP-" + anio + "-" + mes;
-        ReporteMensual reporte = new ReporteMensual(id, mes, anio, total, metasCumplidas, porCategoria);
+        int actividadesRealizadas = 0;
+        for (Actividad a : actividades) {
+            if (a.isCompletada() && a.getMes() == mes && a.getAnio() == anio) {
+                actividadesRealizadas++;
+            }
+        }
 
-      
+        String id = "REP-" + anio + "-" + mes;
+        ReporteMensual reporte = new ReporteMensual(id, mes, anio, total, metasCumplidas, actividadesRealizadas, porCategoria);
+
         for (int i = 0; i < reportes.size(); i++) {
             if (reportes.get(i).getIdReporte().equals(id)) {
                 reportes.remove(i);
@@ -71,9 +74,53 @@ public class Estudiante {
         reportes.add(reporte);
         return reporte;
     }
+
     public String toString() {
         return idEstudiante + " | " + nombre + " | " + correo;
     }
+
+    private ArrayList<Actividad> actividades = new ArrayList<>();
+
+    public ArrayList<Actividad> getActividades() {
+        return actividades;
+    }
+
+    public void agregarActividad(Actividad a) {
+        actividades.add(a);
+    }
+
+    public Actividad buscarActividad(String id) {
+        for (Actividad a : actividades) {
+            if (a.getId().equalsIgnoreCase(id)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<ElementoPlanificable> getElementos() {
+        ArrayList<ElementoPlanificable> elementos = new ArrayList<>();
+        for (Actividad a : actividades) {
+            elementos.add(a);
+        }
+        for (MetaAcademica m : metas) {
+            for (Tarea t : m.getTareas()) {
+                elementos.add(t);
+            }
+        }
+        return elementos;
+    }
+
+    public ElementoPlanificable buscarElemento(String id) {
+        for (ElementoPlanificable e : getElementos()) {
+            if (e.getId().equalsIgnoreCase(id)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    private ArrayList<Presupuesto> presupuestos = new ArrayList<>();
 
     public ArrayList<Presupuesto> getPresupuestos() {
         return presupuestos;
@@ -108,6 +155,8 @@ public class Estudiante {
         p.agregarGasto(g);
         return true;
     }
+
+    private ArrayList<MetaAcademica> metas = new ArrayList<>();
 
     public ArrayList<MetaAcademica> getMetas() {
         return metas;

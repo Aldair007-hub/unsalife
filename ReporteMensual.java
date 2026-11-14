@@ -7,15 +7,17 @@ public class ReporteMensual {
     private int anio;
     private double totalGastos;
     private int metasCumplidas;
+    private int actividadesRealizadas; 
     private HashMap<String, Double> gastosPorCategoria;
 
     public ReporteMensual(String idReporte, int mes, int anio, double totalGastos, int metasCumplidas,
-            HashMap<String, Double> gastosPorCategoria) {
+            int actividadesRealizadas, HashMap<String, Double> gastosPorCategoria) {
         this.idReporte = idReporte;
         this.mes = mes;
         this.anio = anio;
         this.totalGastos = totalGastos;
         this.metasCumplidas = metasCumplidas;
+        this.actividadesRealizadas = actividadesRealizadas;
         this.gastosPorCategoria = gastosPorCategoria;
     }
 
@@ -38,7 +40,9 @@ public class ReporteMensual {
     public int getMetasCumplidas() {
         return metasCumplidas;
     }
-
+    public int getActividadesRealizadas() {
+        return actividadesRealizadas;
+    }
 
     public void generarGrafico() {
         System.out.println("  Gastos por categoría - " + Fecha.textoMesAnio(mes, anio));

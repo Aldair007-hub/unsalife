@@ -5,7 +5,7 @@ public class MetaAcademica {
     private String idMeta;
     private String titulo;
     private String materia;
-    private double progreso;
+    private double progreso; 
     private Fecha fechaLimite;
     private ArrayList<Tarea> tareas = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class MetaAcademica {
 
     public Tarea buscarTarea(String idTarea) {
         for (Tarea t : tareas) {
-            if (t.getIdTarea().equalsIgnoreCase(idTarea)) {
+            if (t.getId().equalsIgnoreCase(idTarea)) {
                 return t;
             }
         }
@@ -78,7 +78,6 @@ public class MetaAcademica {
     }
 
     public String toString() {
-        return "[Meta " + idMeta + "] " + titulo + " (" + materia + ") | Límite: " + fechaLimite
-                + " | Progreso: " + (Math.round(progreso * 10) / 10.0) + "%";
+        return "[Meta " + idMeta + "] " + titulo + " (" + materia + ") | Límite: " + fechaLimite + " | Progreso: " + (Math.round(progreso * 10) / 10.0) + "%";
     }
 }

@@ -2,10 +2,9 @@ import java.util.*;
 
 public class Main {
 
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        HashMap<String, Integer> contadores = new HashMap<>(); 
+        HashMap<String, Integer> contadores = new HashMap<>();
         System.out.println("\n-- UnsaLife - Gestor integral de vida universitaria --");
 
         System.out.print("\nTu nombre: ");
@@ -14,7 +13,7 @@ public class Main {
         String correo = scanner.nextLine().trim();
         Estudiante estudiante = new Estudiante(generarId("EST", contadores), nombre, correo);
         System.out.println("\n¡Hola, " + nombre + "!");
-      
+
         Fecha hoy = new Fecha(new Date());
         System.out.println("Fecha de hoy: " + hoy);
         int opcion;
@@ -22,9 +21,9 @@ public class Main {
             System.out.println("\n---------- MENÚ PRINCIPAL ----------");
             System.out.println("1. Gastos y presupuestos");
             System.out.println("2. Metas académicas y tareas");
-            System.out.println("3. Reportes mensuales");
-            System.out.println("4. Resumen general");
-            System.out.println("5. Cargar datos de ejemplo");
+            System.out.println("3. Actividades y recordatorios");
+            System.out.println("4. Reportes mensuales");
+            System.out.println("5. Resumen general");
             System.out.println("0. Salir");
             System.out.print("Elige una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
@@ -36,14 +35,13 @@ public class Main {
                     menuMetas(scanner, estudiante, hoy, contadores);
                     break;
                 case 3:
-                    menuReportes(scanner, estudiante);
+                    menuActividades(scanner, estudiante, contadores);
                     break;
                 case 4:
-                    mostrarResumenGeneral(estudiante, hoy);
+                    menuReportes(scanner, estudiante);
                     break;
                 case 5:
-                    cargarGastosEjemplo(estudiante, hoy, contadores);
-                    cargarMetasEjemplo(estudiante, hoy, contadores);
+                    mostrarResumenGeneral(estudiante, hoy);
                     break;
                 case 0:
                     break;
@@ -62,6 +60,143 @@ public class Main {
         }
         contadores.put(prefijo, numero);
         return prefijo + "-" + numero;
+    }
+
+
+    public static void menuActividades(Scanner scanner, Estudiante estudiante, HashMap<String, Integer> contadores) {
+        int opcion;
+        do {
+            System.out.println("\n--- Actividades y recordatorios ---");
+            System.out.println("1. Crear actividad");
+            System.out.println("2. Ver mis actividades");
+            System.out.println("3. Marcar actividad como completada");
+            System.out.println("4. Agregar recordatorio (a una actividad o tarea)");
+            System.out.println("5. Ver recordatorios y notificaciones");
+            System.out.println("0. Volver");
+            System.out.print("Elige una opción: ");
+            opcion = Integer.parseInt(scanner.nextLine());
+            switch (opcion) {
+                case 1:
+                    crearActividad(scanner, estudiante, contadores);
+                    break;
+                case 2:
+                    listarActividades(estudiante);
+                    break;
+                case 3:
+                    completarActividad(scanner, estudiante);
+                    break;
+                case 4:
+                    agregarRecordatorio(scanner, estudiante, contadores);
+                    break;
+                case 5:
+                    verRecordatorios(estudiante);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("  Opción no válida. Intenta de nuevo.");
+                    break;
+            }
+        } while (opcion != 0);
+    }
+
+    public static void crearActividad(Scanner scanner, Estudiante estudiante, HashMap<String, Integer> contadores) {
+        System.out.println("\n[Nueva actividad]");
+        System.out.print("Título: ");
+        String titulo = scanner.nextLine().trim();
+        System.out.print("Descripción (Enter para omitir): ");
+        String descripcion = scanner.nextLine().trim();
+        System.out.println("Fecha y hora de la actividad:");
+        Date fechaHora = lectorFechaHora(scanner);
+        Actividad a = new Actividad(generarId("ACT", contadores), titulo, descripcion, fechaHora);
+        estudiante.agregarActividad(a);
+        System.out.println("  Actividad " + a.getId() + " creada.");
+    }
+
+    public static void listarActividades(Estudiante estudiante) {
+        System.out.println("\n[Mis actividades]");
+        if (estudiante.getActividades().isEmpty()) {
+            System.out.println("  (ninguna)");
+        }
+        for (Actividad a : estudiante.getActividades()) {
+            System.out.println("  " + a + "  (recordatorios: " + a.getRecordatorios().size() + ")");
+        }
+    }
+
+    public static void completarActividad(Scanner scanner, Estudiante estudiante) {
+        if (estudiante.getActividades().isEmpty()) {
+            System.out.println("\n  Aún no tienes actividades.");
+        } else {
+            listarActividades(estudiante);
+            System.out.print("Id de la actividad (ej. ACT-1): ");
+            String id = scanner.nextLine().trim();
+            Actividad a = estudiante.buscarActividad(id);
+            if (a == null) {
+                System.out.println("  No existe una actividad con ese id.");
+            } else if (a.isCompletada()) {
+                System.out.println("  Esa actividad ya estaba completada.");
+            } else {
+                a.marcarCompletada();
+                System.out.println("  ¡Actividad completada!");
+            }
+        }
+    }
+
+    public static void agregarRecordatorio(Scanner scanner, Estudiante estudiante, HashMap<String, Integer> contadores) {
+        ArrayList<ElementoPlanificable> elementos = estudiante.getElementos();
+        if (elementos.isEmpty()) {
+            System.out.println("\n  Primero crea una actividad o una tarea.");
+        } else {
+            System.out.println("\n[Actividades y tareas disponibles]");
+            for (ElementoPlanificable e : elementos) {
+                System.out.println("  " + e);
+            }
+            System.out.print("Id de la actividad o tarea (ej. ACT-1 o TAR-1): ");
+            String id = scanner.nextLine().trim();
+            ElementoPlanificable elemento = estudiante.buscarElemento(id);
+            if (elemento == null) {
+                System.out.println("  No existe una actividad ni tarea con ese id.");
+            } else {
+                System.out.print("Mensaje del recordatorio: ");
+                String mensaje = scanner.nextLine().trim();
+                System.out.println("Fecha y hora de la alarma:");
+                Date alarma = lectorFechaHora(scanner);
+                Recordatorio r = new Recordatorio(generarId("REC", contadores), alarma, mensaje, true);
+                elemento.agregarRecordatorio(r);
+                System.out.println("  Recordatorio " + r.getIdRecordatorio() + " agregado a " + elemento.getId() + ".");
+            }
+        }
+    }
+
+    public static void verRecordatorios(Estudiante estudiante) {
+        System.out.println("\n[Todos los recordatorios]");
+        int total = 0;
+        for (ElementoPlanificable e : estudiante.getElementos()) {
+            for (Recordatorio r : e.getRecordatorios()) {
+                System.out.println("  " + r + "  -> " + e.getTipo() + " " + e.getId() + ": " + e.getTitulo());
+                total++;
+            }
+        }
+        if (total == 0) {
+            System.out.println("  (ninguno)");
+        } else {
+            System.out.println("\n[Notificaciones pendientes (la alarma ya llegó y el elemento sigue pendiente)]");
+            Date ahora = new Date();
+            int pendientes = 0;
+            for (ElementoPlanificable e : estudiante.getElementos()) {
+                if (!e.isCompletada()) {
+                    for (Recordatorio r : e.getRecordatorios()) {
+                        if (r.estaPendiente(ahora)) {
+                            r.activarNotificacion();
+                            pendientes++;
+                        }
+                    }
+                }
+            }
+            if (pendientes == 0) {
+                System.out.println("  No hay notificaciones pendientes.");
+            }
+        }
     }
 
 
@@ -117,7 +252,6 @@ public class Main {
         }
     }
 
-
     public static void mostrarResumenGeneral(Estudiante estudiante, Fecha hoy) {
         System.out.println("\n---------- RESUMEN GENERAL ----------");
         System.out.println("Estudiante: " + estudiante);
@@ -145,11 +279,18 @@ public class Main {
                 }
             }
         }
+        int actividadesPendientes = 0;
+        for (Actividad a : estudiante.getActividades()) {
+            if (!a.isCompletada()) {
+                actividadesPendientes++;
+            }
+        }
         System.out.println("\nMetas académicas: " + estudiante.getMetas().size());
         System.out.println("Tareas pendientes: " + pendientes);
         System.out.println("Tareas vencidas  : " + vencidas);
+        System.out.println("Actividades pendientes: " + actividadesPendientes);
     }
-    
+
     public static void menuGastos(Scanner scanner, Estudiante estudiante, Fecha hoy,
             HashMap<String, Integer> contadores) {
         int opcion;
@@ -280,7 +421,6 @@ public class Main {
             }
         }
     }
-
     public static void listarPresupuestos(Estudiante estudiante) {
         System.out.println("\n[Mis presupuestos]");
         if (estudiante.getPresupuestos().isEmpty()) {
@@ -290,25 +430,6 @@ public class Main {
             System.out.println("  " + p);
         }
     }
-
-    public static void cargarGastosEjemplo(Estudiante estudiante, Fecha hoy, HashMap<String, Integer> contadores) {
-        if (estudiante.buscarPresupuesto(hoy) != null) {
-            System.out.println("\n  Ya tienes un presupuesto este mes; no se cargaron gastos de ejemplo.");
-        } else {
-            Presupuesto p = new Presupuesto(generarId("PRE", contadores), 500, hoy.getMes(), hoy.getAnio());
-            estudiante.crearPresupuesto(p);
-            String[] categorias = {"Alimentación", "Transporte", "Fotocopias", "Alimentación", "Ocio"};
-            double[] montos = {120, 45, 30, 85, 100};
-            int[] dias = {3, 5, 8, 12, 15};
-            for (int i = 0; i < categorias.length; i++) {
-                Gasto g = new Gasto(generarId("GAS", contadores), montos[i], categorias[i],
-                          new Fecha(dias[i], hoy.getMes(), hoy.getAnio()), "Gasto de ejemplo");
-                estudiante.registrarGasto(g);
-            }
-            System.out.println("\n  Gastos de ejemplo cargados en " + Fecha.textoMesAnio(hoy.getMes(), hoy.getAnio()) + ".");
-        }
-    }
-
     public static void menuMetas(Scanner scanner, Estudiante estudiante, Fecha hoy,
             HashMap<String, Integer> contadores) {
         int opcion;
@@ -342,7 +463,6 @@ public class Main {
             }
         } while (opcion != 0);
     }
-
     public static void crearMeta(Scanner scanner, Estudiante estudiante, HashMap<String, Integer> contadores) {
         System.out.println("\n[Nueva meta académica]");
         System.out.print("Título de la meta: ");
@@ -354,7 +474,6 @@ public class Main {
         estudiante.crearMeta(m);
         System.out.println("  Meta " + m.getIdMeta() + " creada.");
     }
-
     public static void agregarTarea(Scanner scanner, Estudiante estudiante, HashMap<String, Integer> contadores) {
         if (estudiante.getMetas().isEmpty()) {
             System.out.println("\n  Primero crea una meta académica.");
@@ -369,6 +488,7 @@ public class Main {
             if (meta == null) {
                 System.out.println("  No existe una meta con ese id.");
             } else {
+                System.out.print("Título de la tarea: ");
                 String titulo = scanner.nextLine().trim();
                 System.out.print("Descripción (Enter para omitir): ");
                 String descripcion = scanner.nextLine().trim();
@@ -380,12 +500,11 @@ public class Main {
                 }
                 Tarea t = new Tarea(generarId("TAR", contadores), titulo, descripcion, fechaLimite);
                 meta.agregarTarea(t);
-                System.out.println("  Tarea " + t.getIdTarea() + " agregada a " + meta.getIdMeta() + ".");
+                System.out.println("  Tarea " + t.getId() + " agregada a " + meta.getIdMeta() + ".");
             }
     
         }
     }
-
     public static void listarMetas(Estudiante estudiante, Fecha hoy) {
         System.out.println("\n[Mis metas académicas]");
         if (estudiante.getMetas().isEmpty()) {
@@ -405,7 +524,6 @@ public class Main {
             }
         }
     }
-
     public static void completarTarea(Scanner scanner, Estudiante estudiante, Fecha hoy) {
         if (estudiante.getMetas().isEmpty()) {
             System.out.println("\n  Aún no tienes metas.");
@@ -435,30 +553,6 @@ public class Main {
             }
         }
     }
-
-    public static void cargarMetasEjemplo(Estudiante estudiante, Fecha hoy, HashMap<String, Integer> contadores) {
-        if (!estudiante.getMetas().isEmpty()) {
-            System.out.println("  Ya tienes metas; no se cargaron metas de ejemplo.");
-        } else {
-            int anio = hoy.getAnio();
-            MetaAcademica m1 = new MetaAcademica(generarId("META", contadores), "Aprobar Desarrollo de Software OO", "Desarrollo de Software OO", new Fecha(10, 12, anio));
-            Tarea t1 = new Tarea(generarId("TAR", contadores), "Repasar herencia y polimorfismo", "", new Fecha(20, hoy.getMes(), anio));
-            Tarea t2 = new Tarea(generarId("TAR", contadores), "Practicar diagramas UML", "", new Fecha(25, hoy.getMes(), anio));
-            t1.marcarCompletada();
-            m1.agregarTarea(t1);
-            m1.agregarTarea(t2);
-            estudiante.crearMeta(m1);
-    
-            MetaAcademica m2 = new MetaAcademica(generarId("META", contadores), "Entregar proyecto UnsaLife", "Desarrollo de Software OO", new Fecha(28, hoy.getMes(), anio));
-            Tarea t3 = new Tarea(generarId("TAR", contadores), "Versión consola", "", new Fecha(15, hoy.getMes(), anio));
-            t3.marcarCompletada();
-            m2.agregarTarea(t3);
-            estudiante.crearMeta(m2);
-    
-            System.out.println("  Metas y tareas de ejemplo cargadas.");
-        }
-    }
-
     public static Fecha lectorMesAnio(Scanner scanner){
         int mes;
         do {
@@ -480,7 +574,6 @@ public class Main {
 
         return new Fecha(1, mes, anio);
     }
-
     public static Fecha lectorFecha(Scanner scanner){
         Fecha mesAnio = lectorMesAnio(scanner);
         int mes = mesAnio.getMes();
@@ -495,5 +588,30 @@ public class Main {
         } while (dia < 1 || dia > Fecha.diasDelMes(mes, anio));
 
         return new Fecha(dia, mes, anio);
+    }
+    public static Date lectorFechaHora(Scanner scanner){
+        Fecha fecha = lectorFecha(scanner);
+        int hora;
+        do {
+            System.out.print("  Hora (0-23): ");
+            hora = Integer.parseInt(scanner.nextLine());
+            if (hora < 0 || hora > 23) {
+                System.out.println("  La hora debe estar entre 0 y 23.");
+            }
+        } while (hora < 0 || hora > 23);
+
+        int minuto;
+        do {
+            System.out.print("  Minutos (0-59): ");
+            minuto = Integer.parseInt(scanner.nextLine());
+            if (minuto < 0 || minuto > 59) {
+                System.out.println("  Los minutos deben estar entre 0 y 59.");
+            }
+        } while (minuto < 0 || minuto > 59);
+
+        return crearFechaHora(fecha, hora, minuto);
+    }
+    public static Date crearFechaHora(Fecha fecha, int hora, int minuto) {
+        return new Date(fecha.getAnio() - 1900, fecha.getMes() - 1, fecha.getDia(), hora, minuto);
     }
 }
