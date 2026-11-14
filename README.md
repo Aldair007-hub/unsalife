@@ -134,15 +134,17 @@ java Main
 
 Cuando pida `Tu nombre:`, escribe tu nombre. Cuando pida `Tu correo:`, escribe tu correo. Verás el saludo, la fecha de hoy y el menú principal.
 
-<img width="518" height="176" alt="Captura de pantalla 2026-11-13 224907" src="https://github.com/user-attachments/assets/0cafb23d-17d6-4887-89ef-af968d32a0bb" />
-
+<p align="center">
+  <img width="518" height="176" alt="Inicio del programa" src="https://github.com/user-attachments/assets/0cafb23d-17d6-4887-89ef-af968d32a0bb" />
+</p>
 
 ### Paso 2: crear el presupuesto del mes
 
 Escribe `1` (Gastos y presupuestos), luego `1` (Crear presupuesto mensual). Responde: mes `11`, año `2026`, límite `300`.
 
-<img width="346" height="507" alt="Captura de pantalla 2026-11-13 225315" src="https://github.com/user-attachments/assets/71bb6410-82d2-4965-9eaa-4e12a0e73ada" />
-
+<p align="center">
+  <img width="346" height="507" alt="Crear presupuesto" src="https://github.com/user-attachments/assets/71bb6410-82d2-4965-9eaa-4e12a0e73ada" />
+</p>
 
 **Resultado esperado:** `Presupuesto PRE-1 creado.`
 
@@ -150,8 +152,9 @@ Escribe `1` (Gastos y presupuestos), luego `1` (Crear presupuesto mensual). Resp
 
 Escribe `2` (Registrar un gasto). Responde: mes `11`, año `2026`, día `13`, monto `250`, categoría `comida`, descripción `almuerzo`.
 
-<img width="510" height="412" alt="Captura de pantalla 2026-11-13 225707" src="https://github.com/user-attachments/assets/63be0471-952c-4807-af2b-c1553a4f9ee5" />
-
+<p align="center">
+  <img width="510" height="412" alt="Registrar gasto" src="https://github.com/user-attachments/assets/63be0471-952c-4807-af2b-c1553a4f9ee5" />
+</p>
 
 **Resultado esperado:** `Gasto GAS-1 registrado. Saldo restante: S/ 50.0` y el aviso `ya usaste más del 80% de tu presupuesto`.
 
@@ -159,65 +162,97 @@ Escribe `2` (Registrar un gasto). Responde: mes `11`, año `2026`, día `13`, mo
 
 Escribe `3` y responde mes `11`, año `2026`. Verás el límite (S/ 300), lo gastado (S/ 250, 83.3 %), el saldo y la lista con el gasto `GAS-1`. Escribe `0` para volver al menú principal.
 
-<img width="766" height="399" alt="Captura de pantalla 2026-11-13 225845" src="https://github.com/user-attachments/assets/dd8977d2-6479-4ebf-94f1-8866bfbaf6ad" />
+<p align="center">
+  <img width="766" height="399" alt="Detalle del presupuesto" src="https://github.com/user-attachments/assets/dd8977d2-6479-4ebf-94f1-8866bfbaf6ad" />
+</p>
 
 ### Paso 5: crear una meta con tareas
 
-1. Escribe `2` (Metas académicas) y luego `1` (Crear meta). Responde: título `Proyecto final`, materia `POO`, fecha límite mes `12`, año `2026`, día `20`. 
-   <img width="334" height="568" alt="Captura de pantalla 2026-11-13 230139" src="https://github.com/user-attachments/assets/e6ed1a01-df26-49c3-87f6-165ea07edfa4" />
-**Resultado:** `Meta META-1 creada.                                                 
-2. Escribe `2` (Agregar tarea). Código de la meta: `META-1`. Título `Entregar informe`, sin descripción (Enter), fecha límite mes `11`, año `2026`, día `25`. 
-   <img width="692" height="403" alt="Captura de pantalla 2026-11-13 230818" src="https://github.com/user-attachments/assets/5bf8119e-2b81-4aa3-8731-4644c0d88b88" />
-**Resultado:** `Tarea TAR-1 agregada a META-1.`
-3. Repite la opción `2` para agregar una segunda tarea, `Subir código`, con fecha límite mes `12`, año `2026`, día `5`. 
-<img width="687" height="409" alt="Captura de pantalla 2026-11-13 231122" src="https://github.com/user-attachments/assets/2e090e8e-a06a-4867-ae72-30f7e4bf17b0" />
+1. Escribe `2` (Metas académicas) y luego `1` (Crear meta). Responde: título `Proyecto final`, materia `POO`, fecha límite mes `12`, año `2026`, día `20`.
+
+   <p align="center">
+     <img width="334" height="568" alt="Crear meta" src="https://github.com/user-attachments/assets/e6ed1a01-df26-49c3-87f6-165ea07edfa4" />
+   </p>
+
+   **Resultado:** `Meta META-1 creada.`
+
+2. Escribe `2` (Agregar tarea). Código de la meta: `META-1`. Título `Entregar informe`, sin descripción (Enter), fecha límite mes `11`, año `2026`, día `25`.
+
+   <p align="center">
+     <img width="692" height="403" alt="Agregar primera tarea" src="https://github.com/user-attachments/assets/5bf8119e-2b81-4aa3-8731-4644c0d88b88" />
+   </p>
+
+   **Resultado:** `Tarea TAR-1 agregada a META-1.`
+
+3. Repite la opción `2` para agregar una segunda tarea, `Subir código`, con fecha límite mes `12`, año `2026`, día `5`.
+
+   <p align="center">
+     <img width="687" height="409" alt="Agregar segunda tarea" src="https://github.com/user-attachments/assets/2e090e8e-a06a-4867-ae72-30f7e4bf17b0" />
+   </p>
 
 ### Paso 6: ver el progreso y completar una tarea
 
 Escribe `3` para ver la meta con 0.0 % de progreso y sus dos tareas. Si alguna fecha límite ya pasó, verás `[VENCIDA]` junto a ella.
 
-<img width="687" height="409" alt="Captura de pantalla 2026-11-13 231122" src="https://github.com/user-attachments/assets/46a56f01-48f7-40b5-af09-8c7162ec4b0c" />
-
+<p align="center">
+  <img width="687" height="409" alt="Ver metas y tareas" src="https://github.com/user-attachments/assets/46a56f01-48f7-40b5-af09-8c7162ec4b0c" />
+</p>
 
 Escribe `4`, código de meta `META-1` y código de tarea `TAR-1`.
 
-<img width="685" height="344" alt="Captura de pantalla 2026-11-13 231406" src="https://github.com/user-attachments/assets/b6e15f33-d5cf-4044-b0fe-9469827b04b3" />
-
+<p align="center">
+  <img width="685" height="344" alt="Completar tarea" src="https://github.com/user-attachments/assets/b6e15f33-d5cf-4044-b0fe-9469827b04b3" />
+</p>
 
 **Resultado esperado:** `¡Tarea completada! Progreso de la meta: 50.0%`. Si completas también `TAR-2`, el programa felicita por cumplir la meta. Escribe `0` para volver.
 
 ### Paso 7: crear una actividad y un recordatorio
 
-1. Escribe `3` (Actividades y recordatorios) y luego `1` (Crear actividad). Responde: título `Examen POO`, sin descripción, fecha mes `11`, año `2026`, día `20`, hora `10`, minutos `30`. 
-   <img width="460" height="635" alt="Captura de pantalla 2026-11-13 231615" src="https://github.com/user-attachments/assets/97f5cfce-f4bc-410a-8d3b-51d517e6d683" />
-**Resultado:** `Actividad ACT-1 creada.`
-2. Escribe `4` (Agregar recordatorio). Código: `ACT-1`. Mensaje `Repasar clases`. Fecha de la alarma: mes `11`, año `2026`, día `1`, hora `8`, minutos `0` (una fecha ya pasada, para que se note la notificación). 
-  <img width="617" height="506" alt="Captura de pantalla 2026-11-13 231754" src="https://github.com/user-attachments/assets/bf9aa2a7-3bcf-4cb1-84fa-c8055f4be610" />
- **Resultado:** `Recordatorio REC-1 agregado a ACT-1.`
-3. Escribe `5` (Ver recordatorios y notificaciones). Verás el recordatorio en la lista y, debajo, la notificación `RECORDATORIO ... Repasar clases`, porque la alarma ya llegó y la actividad sigue pendiente. Escribe `0` para volver. 
+1. Escribe `3` (Actividades y recordatorios) y luego `1` (Crear actividad). Responde: título `Examen POO`, sin descripción, fecha mes `11`, año `2026`, día `20`, hora `10`, minutos `30`.
 
-<img width="794" height="330" alt="Captura de pantalla 2026-11-13 231848" src="https://github.com/user-attachments/assets/fc2ac5b0-3f8b-495a-b988-72a022ef9404" />
+   <p align="center">
+     <img width="460" height="635" alt="Crear actividad" src="https://github.com/user-attachments/assets/97f5cfce-f4bc-410a-8d3b-51d517e6d683" />
+   </p>
+
+   **Resultado:** `Actividad ACT-1 creada.`
+
+2. Escribe `4` (Agregar recordatorio). Código: `ACT-1`. Mensaje `Repasar clases`. Fecha de la alarma: mes `11`, año `2026`, día `1`, hora `8`, minutos `0` (una fecha ya pasada, para que se note la notificación).
+
+   <p align="center">
+     <img width="617" height="506" alt="Agregar recordatorio" src="https://github.com/user-attachments/assets/bf9aa2a7-3bcf-4cb1-84fa-c8055f4be610" />
+   </p>
+
+   **Resultado:** `Recordatorio REC-1 agregado a ACT-1.`
+
+3. Escribe `5` (Ver recordatorios y notificaciones). Verás el recordatorio en la lista y, debajo, la notificación `RECORDATORIO ... Repasar clases`, porque la alarma ya llegó y la actividad sigue pendiente. Escribe `0` para volver.
+
+   <p align="center">
+     <img width="794" height="330" alt="Ver recordatorios y notificaciones" src="https://github.com/user-attachments/assets/fc2ac5b0-3f8b-495a-b988-72a022ef9404" />
+   </p>
 
 ### Paso 8: generar el reporte mensual
 
 Escribe `4` (Reportes mensuales) y luego `1` (Generar el reporte de un mes). Responde mes `11`, año `2026`. Verás el total de gastos, las metas cumplidas, el saldo del presupuesto y el gráfico de barras por categoría. Escribe `0` para volver.
 
-<img width="471" height="568" alt="Captura de pantalla 2026-11-13 232138" src="https://github.com/user-attachments/assets/1efc791a-9901-4c45-9b81-d338c8d2b8ff" />
-
+<p align="center">
+  <img width="471" height="568" alt="Reporte mensual" src="https://github.com/user-attachments/assets/1efc791a-9901-4c45-9b81-d338c8d2b8ff" />
+</p>
 
 ### Paso 9: ver el resumen general
 
 Escribe `5`. Verás tu nombre, la fecha de hoy, el gasto del mes (S/ 250 de S/ 300), el número de metas, las tareas pendientes y vencidas, y las actividades pendientes.
 
-<img width="451" height="458" alt="Captura de pantalla 2026-11-13 232218" src="https://github.com/user-attachments/assets/9aeab7bb-83c4-4a20-b778-9a47ccb4f33c" />
-
+<p align="center">
+  <img width="451" height="458" alt="Resumen general" src="https://github.com/user-attachments/assets/9aeab7bb-83c4-4a20-b778-9a47ccb4f33c" />
+</p>
 
 ### Paso 10: salir
 
 Escribe `0`. El programa se despide con `Hasta pronto` y cierra. Recuerda que los datos no se guardan.
 
-<img width="449" height="227" alt="Captura de pantalla 2026-11-13 232303" src="https://github.com/user-attachments/assets/4011c595-4b79-4071-a134-c1ad998a389e" />
-
+<p align="center">
+  <img width="449" height="227" alt="Salir del programa" src="https://github.com/user-attachments/assets/4011c595-4b79-4071-a134-c1ad998a389e" />
+</p>
 
 ### Prueba de errores recomendada
 
