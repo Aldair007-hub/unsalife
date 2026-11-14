@@ -1,225 +1,221 @@
 # UnsaLife - Gestor integral de vida universitaria
 
-## 1. Descripción general del proyecto
-UnsaLife es una aplicación que reúne el control de gastos, las actividades, los objetivos académicos y la organización personal del estudiante. El proyecto se desarrolla en Java con programación orientada a objetos y se organiza mediante Scrum, con cuatro sprints de una semana cada uno y una entrega semanal de un script ejecutable con sus evidencias.
+Aplicación de consola en Java para controlar gastos, organizar actividades y recordatorios, administrar metas académicas y consultar reportes mensuales.
 
-### 1.1 Objetivo
-Desarrollar UnsaLife, una aplicación que ayude al estudiante universitario a controlar sus gastos, organizar sus actividades y recordatorios, administrar sus metas académicas y consultar reportes mensuales.
+---
 
-### 1.2 Duración y organización
+## 1. Cómo usar el programa
 
-| Elemento | Definición |
+### 1.1 Reglas generales de uso
+
+- Todo se maneja escribiendo el número de la opción y pulsando **Enter**.
+- En cualquier submenú, la opción `0` vuelve al menú anterior. En el menú principal, la opción `0` cierra el programa.
+- **Los datos viven solo en la memoria:** el programa no guarda nada en archivos. Al cerrarlo se pierde todo lo que registraste, y la próxima vez empiezas de cero.
+- El programa asigna un **código automático** a cada elemento que creas. Los números suben de uno en uno:
+
+  | Elemento | Código |
+  | :--- | :--- |
+  | Presupuesto | `PRE-1` |
+  | Gasto | `GAS-1` |
+  | Meta | `META-1` |
+  | Tarea | `TAR-1` |
+  | Actividad | `ACT-1` |
+  | Recordatorio | `REC-1` |
+
+  Cuando el programa te pida un código, escríbelo como aparece en pantalla (por ejemplo `META-1`). Las mayúsculas y minúsculas no importan en metas, tareas y actividades.
+- Las fechas se piden siempre en este orden: **mes, año y día**. El programa muestra el rango válido en cada pregunta, por ejemplo `Día (1-30)`. Cuando también pide hora, las pide después: hora (0-23) y minutos (0-59).
+- Escribe **solo números** en los menús y en los montos. Para decimales usa punto (`25.50`). Si escribes letras, el programa se cierra con un error.
+
+### 1.2 Menú principal
+
+Al iniciar, el programa pide tu nombre y tu correo, muestra la fecha de hoy (la toma de la computadora) y abre este menú:
+
+```
+1. Gastos y presupuestos
+2. Metas académicas y tareas
+3. Actividades y recordatorios
+4. Reportes mensuales
+5. Resumen general
+0. Salir
+```
+
+**Orden recomendado la primera vez:** primero crea un presupuesto (opción 1), luego registra gastos, después crea metas y tareas (opción 2), luego actividades y recordatorios (opción 3), y al final revisa los reportes (opción 4) y el resumen (opción 5).
+
+### 1.3 Opción 1: Gastos y presupuestos
+
+```
+1. Crear presupuesto mensual
+2. Registrar un gasto
+3. Ver el detalle de un presupuesto
+4. Ver todos los presupuestos
+0. Volver
+```
+
+- **Crear presupuesto mensual:** pide mes, año y el monto límite en soles. Solo se permite un presupuesto por mes.
+- **Registrar un gasto:** pide la fecha del gasto (mes, año y día), el monto, la categoría y una descripción (puede quedar vacía con Enter). Al terminar muestra el saldo restante.
+  **Importante:** el gasto solo se registra si ya existe un presupuesto para el mes de esa fecha. Si no existe, el programa avisa que debes crearlo primero.
+- **Ver el detalle de un presupuesto:** pide mes y año, y muestra el límite, lo gastado con su porcentaje, el saldo, el estado y la lista de gastos con su fecha.
+- **Ver todos los presupuestos:** lista los presupuestos creados.
+- **Alertas automáticas:** cuando el gasto acumulado pasa el 80 % del límite, aparece un aviso. Si supera el límite, aparece una alerta.
+- **Las categorías se normalizan:** "comida" se guarda como "Comida", para que los gastos del mismo tipo se agrupen bien en el reporte.
+
+### 1.4 Opción 2: Metas académicas y tareas
+
+```
+1. Crear meta académica
+2. Agregar tarea a una meta
+3. Ver metas y sus tareas
+4. Marcar tarea como completada
+0. Volver
+```
+
+- **Crear meta académica:** pide el título, la materia y la fecha límite de la meta.
+- **Agregar tarea a una meta:** primero lista las metas y pide el código de la meta. Luego pide el título de la tarea, la descripción (opcional) y su fecha límite. Si la tarea vence después de la fecha límite de la meta, el programa muestra una nota de aviso, pero igual la agrega. Necesitas tener al menos una meta creada.
+- **Ver metas y sus tareas:** muestra cada meta con su progreso en porcentaje y debajo sus tareas. Las tareas pendientes cuya fecha límite ya pasó aparecen marcadas con `[VENCIDA]`.
+- **Marcar tarea como completada:** pide el código de la meta y luego el de la tarea. Muestra el nuevo progreso de la meta (por ejemplo 50.0 % si completaste una de dos tareas). Cuando completas todas las tareas, el programa felicita porque la meta quedó cumplida.
+- El progreso de una meta es el porcentaje de sus tareas que están completadas.
+
+### 1.5 Opción 3: Actividades y recordatorios
+
+```
+1. Crear actividad
+2. Ver mis actividades
+3. Marcar actividad como completada
+4. Agregar recordatorio (a una actividad o tarea)
+5. Ver recordatorios y notificaciones
+0. Volver
+```
+
+- **Crear actividad:** pide el título, la descripción (opcional) y la fecha y hora (mes, año, día, hora y minutos).
+- **Ver mis actividades:** lista las actividades con su estado y cuántos recordatorios tiene cada una.
+- **Marcar actividad como completada:** pide el código de la actividad (por ejemplo `ACT-1`).
+- **Agregar recordatorio:** lista las actividades y tareas juntas, y pide el código de la que quieras (`ACT-1` o `TAR-1`). Luego pide el mensaje del recordatorio y la fecha y hora de la alarma. Los recordatorios sirven tanto para actividades como para tareas.
+- **Ver recordatorios y notificaciones:** muestra todos los recordatorios y, aparte, las notificaciones pendientes. Una notificación aparece cuando la hora de la alarma ya llegó y la actividad o tarea todavía no está completada. Si completas la actividad, su notificación deja de aparecer. Para ver una notificación en una prueba, pon una alarma con fecha y hora ya pasadas.
+
+### 1.6 Opción 4: Reportes mensuales
+
+```
+1. Generar el reporte de un mes
+2. Ver los reportes generados
+0. Volver
+```
+
+- **Generar el reporte de un mes:** pide mes y año, y muestra el total de gastos, las metas cumplidas, las actividades realizadas, el presupuesto del mes con su saldo y un gráfico de barras hecho con texto, con los gastos por categoría y su porcentaje. Por ejemplo, con 250 soles en comida y 20 en transporte, comida ocupa casi toda la barra (92.6 %) y transporte una parte muy pequeña (7.4 %).
+- **Ver los reportes generados:** lista los reportes que ya generaste en esta sesión.
+
+### 1.7 Opción 5: Resumen general
+
+Muestra de una sola vez tus datos, la fecha de hoy, cuánto has gastado del presupuesto del mes actual, cuántas metas tienes, cuántas tareas están pendientes y cuántas vencidas, y cuántas actividades siguen pendientes. Sirve como tablero rápido de cómo vas.
+
+### 1.8 Validaciones de entrada
+
+Si un dato está fuera de rango, el programa lo dice y vuelve a preguntar hasta que sea válido:
+
+| Dato | Regla |
 | :--- | :--- |
-| Duración total | 4 semanas |
-| Número de sprints | 4 |
-| Duración de cada sprint | 1 semana |
-| Equipo de desarrollo | 3 integrantes |
-| Entregas | Un script ejecutable al final de cada semana, con sus evidencias |
-| Producto final | Aplicación integrada, probada y documentada |
+| Mes | Entre 1 y 12. Mensaje: "El mes debe estar entre 1 y 12." |
+| Año | Entre 2000 y 2100. |
+| Día | Debe existir en ese mes, considerando años bisiestos. Por ejemplo, en noviembre el programa responde "Ese mes tiene solo 30 días." |
+| Hora | Entre 0 y 23. |
+| Minutos | Entre 0 y 59. |
+| Monto | Mayor que cero. |
 
-### 1.3 Funcionalidades principales
-- Registrar gastos y presupuestos.
-- Organizar actividades y recordatorios.
-- Administrar metas académicas.
-- Mostrar gráficos y reportes mensuales.
-- Relacionar objetivos con tareas y fechas límite.
+---
 
-### 1.4 Alcance tecnológico
+## 2. Ejemplo paso a paso
 
-| Componente | Tecnología / enfoque |
-| :--- | :--- |
-| Lenguaje | Java, con programación orientada a objetos |
-| Versión 1 | Aplicación de consola con `Scanner`, usando solo los temas vistos en clase |
-| Versiones siguientes | Interfaz gráfica, archivos o base de datos, según avancen los temas del curso |
-| Control de versiones | Git y GitHub |
+Este recorrido usa todas las funciones del programa. Escribe cada línea y pulsa Enter. Los datos de ejemplo usan noviembre de 2026; si lo pruebas en otro mes, cambia las fechas por las del mes actual.
 
-## 2. Organización del equipo Scrum
+### Paso 1: iniciar el programa
 
-### 2.1 Roles
+```bash
+java Main
+```
 
-| Rol | Responsable | Responsabilidades |
-| :--- | :--- | :--- |
-| Product Owner | Piero Andree Zamora Aquino | Define prioridades, aclara requisitos y acepta las historias terminadas. |
-| Scrum Master | Rotativo entre los integrantes en cada sprint | Facilita los eventos y ayuda a eliminar impedimentos. |
-| Developers | Ronald David Jala Paricanaza y Kevin Aldair Solis Florez | Analizan, diseñan, programan, prueban y documentan. |
+Cuando pida `Tu nombre:`, escribe tu nombre. Cuando pida `Tu correo:`, escribe tu correo. Verás el saludo, la fecha de hoy y el menú principal.
 
-### 2.2 Eventos
+### Paso 2: crear el presupuesto del mes
 
-| Evento | Frecuencia | Propósito |
-| :--- | :--- | :--- |
-| Planificación del sprint | Al inicio de cada semana | Definir el objetivo del sprint y seleccionar las historias. |
-| Seguimiento diario | Diariamente | Revisar el avance hacia el objetivo y los impedimentos. |
-| Revisión del sprint | Al final de cada semana | Demostrar el script ejecutable y recibir retroalimentación. |
-| Retrospectiva | Al final de cada semana | Identificar mejoras en la forma de trabajar. |
+Escribe `1` (Gastos y presupuestos), luego `1` (Crear presupuesto mensual). Responde: mes `11`, año `2026`, límite `300`.
 
-## 3. Product Backlog
+**Resultado esperado:** `Presupuesto PRE-1 creado.`
 
-Las historias se priorizan según el valor para el usuario, el riesgo y las dependencias técnicas. Los puntos son una estimación relativa de esfuerzo, no horas de trabajo.
+### Paso 3: registrar un gasto
 
-| ID | Historia de usuario | Prioridad | Puntos |
-| :--- | :--- | :--- | :--- |
-| HU01 | Como estudiante, quiero registrar mi presupuesto mensual para controlar mis gastos. | Alta | 3 |
-| HU02 | Como estudiante, quiero registrar un gasto con fecha, monto, categoría y descripción. | Alta | 5 |
-| HU03 | Como estudiante, quiero que el sistema me avise cuando me acerco o supero mi límite mensual. | Media | 3 |
-| HU04 | Como estudiante, quiero ver el detalle de mi presupuesto del mes. | Media | 2 |
-| HU05 | Como estudiante, quiero crear metas académicas con fecha límite. | Alta | 3 |
-| HU06 | Como estudiante, quiero agregar tareas a una meta con su fecha límite. | Alta | 3 |
-| HU07 | Como estudiante, quiero marcar tareas como completadas y ver el progreso de mi meta. | Media | 3 |
-| HU08 | Como estudiante, quiero saber qué tareas están vencidas. | Media | 2 |
-| HU09 | Como estudiante, quiero generar un reporte mensual con gráfico de gastos por categoría. | Alta | 5 |
-| HU10 | Como estudiante, quiero crear actividades con fecha y hora. | Media | 3 |
-| HU11 | Como estudiante, quiero agregar recordatorios a mis actividades y tareas. | Media | 5 |
-| HU12 | Como estudiante, quiero ver mis recordatorios activos y las notificaciones pendientes. | Media | 2 |
-| HU13 | Como estudiante, quiero que el sistema valide los rangos de mes, año, día y montos. | Alta | 2 |
+Escribe `2` (Registrar un gasto). Responde: mes `11`, año `2026`, día `13`, monto `250`, categoría `comida`, descripción `almuerzo`.
 
-**Criterios de prioridad:**
-- **Alta:** indispensable para que la aplicación funcione.
-- **Media:** complementa la aplicación y mejora la experiencia.
+**Resultado esperado:** `Gasto GAS-1 registrado. Saldo restante: S/ 50.0` y el aviso `ya usaste más del 80% de tu presupuesto`.
 
-## 4. Sprints
+### Paso 4: ver el detalle del presupuesto
 
-### 4.1 Sprint 1 (semana 1): gastos y presupuestos
- 
-**Estado:** Terminado.
- 
-#### 4.1.1 Sprint Planning
- 
-**Objetivo del sprint:** que el estudiante pueda crear su presupuesto mensual, registrar sus gastos, ver el saldo disponible y recibir alertas cuando se acerca o supera su límite.
- 
-| ID | Historia seleccionada | Puntos |
-| :--- | :--- | :--- |
-| HU01 | Registrar presupuesto mensual | 3 |
-| HU02 | Registrar un gasto | 5 |
-| HU03 | Avisar al acercarse o superar el límite | 3 |
-| HU04 | Ver el detalle del presupuesto del mes | 2 |
-| HU13 | Validar rangos de mes, año, día y montos | 2 |
-| | **Total** | **15** |
- 
-#### 4.1.2 Criterios de aceptación
-- Se puede crear un presupuesto para un mes, y no se pueden crear dos presupuestos para el mismo mes.
-- Un gasto solo se registra si existe un presupuesto para el mes de su fecha.
-- Después de cada gasto se muestra el saldo restante.
-- Se muestra un aviso al alcanzar el 80 % del límite y una alerta al superarlo.
-- El detalle del presupuesto muestra el límite, lo gastado, el porcentaje usado, el saldo, el estado y la lista de gastos.
-- El mes debe estar entre 1 y 12, el año entre 2000 y 2100, el día debe existir en ese mes y el monto debe ser mayor que cero. Si un dato está fuera de rango, se vuelve a pedir.
-#### 4.1.3 Sprint Backlog 1
- 
-**Semana 1: Gastos y presupuestos**
- 
-**Primera presentación** (revisión del sprint, al final de la semana)
-- Analizar los requisitos de presupuestos y gastos.
-- Diseñar las clases `Fecha`, `Presupuesto` y `Gasto`, y reflejarlas en el diagrama de clases.
-- Implementar la clase `Fecha`, con validación de meses, años y días según el mes (incluido el año bisiesto).
-- Implementar la clase `Presupuesto`: agregar gastos, calcular el total gastado y el saldo, y verificar el límite.
-- Implementar la clase `Gasto`, con fecha, monto, categoría, descripción y fecha de registro.
-- Implementar el menú de gastos y presupuestos en la clase principal.
-- Implementar las validaciones de entrada de mes, año, día y monto.
-- Implementar las alertas al 80 % del límite y al superarlo.
-- Probar los casos correctos y los casos de error.
-- Preparar el script, las capturas de ejecución y las evidencias de la semana.
+Escribe `3` y responde mes `11`, año `2026`. Verás el límite (S/ 300), lo gastado (S/ 250, 83.3 %), el saldo y la lista con el gasto `GAS-1`. Escribe `0` para volver al menú principal.
 
-**Entregable:** script ejecutable de gastos y presupuestos, con sus evidencias (captura de ejecución, captura del meet, pruebas realizadas y enlace al repositorio).
- 
-#### 4.1.4 Resultado esperado
-Al final de la semana, el estudiante puede crear su presupuesto mensual, registrar gastos con validación de fechas y montos, ver su saldo después de cada gasto y recibir alertas cuando se acerca o supera el límite del mes.
+### Paso 5: crear una meta con tareas
 
-### 4.2 Sprint 2 (semana 2): metas académicas y tareas
+1. Escribe `2` (Metas académicas) y luego `1` (Crear meta). Responde: título `Proyecto final`, materia `POO`, fecha límite mes `12`, año `2026`, día `20`.
+   **Resultado:** `Meta META-1 creada.`
+2. Escribe `2` (Agregar tarea). Código de la meta: `META-1`. Título `Entregar informe`, sin descripción (Enter), fecha límite mes `11`, año `2026`, día `25`.
+   **Resultado:** `Tarea TAR-1 agregada a META-1.`
+3. Repite la opción `2` para agregar una segunda tarea, `Subir código`, con fecha límite mes `12`, año `2026`, día `5`.
 
-**Estado:** pendiente.
-**Historias:** HU05, HU06, HU07 y HU08. Total: 11 puntos.
-**Objetivo:** el estudiante puede crear metas, agregar tareas, marcarlas como completadas y ver las tareas vencidas.
+### Paso 6: ver el progreso y completar una tarea
 
-### 4.3 Sprint 3 (semana 3): reportes y gráficos
+Escribe `3` para ver la meta con 0.0 % de progreso y sus dos tareas. Si alguna fecha límite ya pasó, verás `[VENCIDA]` junto a ella.
 
-**Estado:** pendiente.
-**Historias:** HU09. Total: 5 puntos.
-**Objetivo:** el estudiante genera un reporte mensual con total gastado, metas cumplidas y gráfico por categoría.
+Escribe `4`, código de meta `META-1` y código de tarea `TAR-1`.
 
-### 4.4 Sprint 4 (semana 4): actividades, recordatorios e integración
+**Resultado esperado:** `¡Tarea completada! Progreso de la meta: 50.0%`. Si completas también `TAR-2`, el programa felicita por cumplir la meta. Escribe `0` para volver.
 
-**Estado:** pendiente.
-**Historias:** HU10, HU11 y HU12. Total: 10 puntos.
-**Objetivo:** el estudiante organiza sus actividades con recordatorios, y el programa integra todas las funciones.
+### Paso 7: crear una actividad y un recordatorio
 
-## 5. Entregables semanales
+1. Escribe `3` (Actividades y recordatorios) y luego `1` (Crear actividad). Responde: título `Examen POO`, sin descripción, fecha mes `11`, año `2026`, día `20`, hora `10`, minutos `30`.
+   **Resultado:** `Actividad ACT-1 creada.`
+2. Escribe `4` (Agregar recordatorio). Código: `ACT-1`. Mensaje `Repasar clases`. Fecha de la alarma: mes `11`, año `2026`, día `1`, hora `8`, minutos `0` (una fecha ya pasada, para que se note la notificación).
+   **Resultado:** `Recordatorio REC-1 agregado a ACT-1.`
+3. Escribe `5` (Ver recordatorios y notificaciones). Verás el recordatorio en la lista y, debajo, la notificación `RECORDATORIO ... Repasar clases`, porque la alarma ya llegó y la actividad sigue pendiente. Escribe `0` para volver.
 
-| Semana | Entregable | Estado |
-| :--- | :--- | :--- |
-| 1 | Script de gastos y presupuestos, con sus evidencias | Terminado |
-| 2 | Script de metas, tareas y vencimientos, con sus evidencias | Pendiente |
-| 3 | Script de reportes mensuales, con sus evidencias | Pendiente |
-| 4 | Versión final integrada, con sus evidencias | Pendiente |
+### Paso 8: generar el reporte mensual
 
-## 6. Evidencias de avance
+Escribe `4` (Reportes mensuales) y luego `1` (Generar el reporte de un mes). Responde mes `11`, año `2026`. Verás el total de gastos, las metas cumplidas, el saldo del presupuesto y el gráfico de barras por categoría. Escribe `0` para volver.
 
-Cada semana se entrega una carpeta o un enlace con:
-- **Script:** el archivo ejecutable de la semana, o el zip del proyecto.
-- **Captura de ejecución:** pantalla de la consola con un caso de uso completo (por ejemplo, registrar un gasto y ver la alerta).
-- **Captura del meet:** captura de la reunión de avance del equipo en la que se presentó el script.
-- **Pruebas realizadas:** lista de los casos probados, incluidos los casos de error.
-- **Repositorio:** enlace al commit de la semana en GitHub.
-- **Problemas encontrados:** qué falló y cómo se resolvió.
-- **Actualización del backlog:** historias terminadas y pendientes.
+### Paso 9: ver el resumen general
 
-### Evidencias registradas
+Escribe `5`. Verás tu nombre, la fecha de hoy, el gasto del mes (S/ 250 de S/ 300), el número de metas, las tareas pendientes y vencidas, y las actividades pendientes.
 
-**Semana 1**
+### Paso 10: salir
 
-Captura del primer meet (reunión del 7 de noviembre de 2026):
+Escribe `0`. El programa se despide con `Hasta pronto` y cierra. Recuerda que los datos no se guardan.
 
-<img width="1917" height="972" alt="Captura de pantalla 2026-11-07 201911" src="https://github.com/user-attachments/assets/97182942-e432-4c17-abb8-80577186be23" />
+### Prueba de errores recomendada
 
-Captura del segundo meet (reunión del 8 de noviembre de 2026):
+Para comprobar las validaciones: al pedir un mes, escribe `13`; al pedir un día en noviembre, escribe `31`; al pedir un monto, escribe `0`. En los tres casos el programa debe avisar y volver a preguntar. Escribe letras solo si quieres ver el error conocido de `NumberFormatException`.
 
-<img width="1919" height="978" alt="Captura de pantalla 2026-11-08 205808" src="https://github.com/user-attachments/assets/95dc6e44-a5a3-47f0-8063-a8b8a641aa62" />
+---
 
-Captura del UML del equipo:
+## 3. Estructura del proyecto
 
-![Diagrama de clases](img/Diagrama%20de%20clases%20UnsaLife.jpg)
+```
+unsalife/
+├── Main.java                  # Menús y punto de entrada del programa
+├── Estudiante.java            # Centro del sistema: presupuestos, metas, actividades y reportes
+├── Fecha.java                 # Fecha propia con validación (incluye años bisiestos)
+├── Presupuesto.java           # Límite mensual y lista de gastos
+├── Gasto.java                 # Monto, categoría, fecha y descripción
+├── MetaAcademica.java         # Meta con lista de tareas y progreso
+├── Tarea.java                 # Tarea con fecha límite (hereda de ElementoPlanificable)
+├── ElementoPlanificable.java  # Superclase abstracta
+├── Actividad.java             # Actividad con fecha y hora (hereda de ElementoPlanificable)
+├── Recordatorio.java          # Alarma asociada a una actividad o tarea
+├── ReporteMensual.java        # Resumen del mes con gráfico por categoría
+└── img/                       # Diagrama de clases UML
+```
 
-**Semanas 2, 3 y 4:** pendientes.
+---
 
-## 7. Arquitectura orientada a objetos
+## 4. Conceptos de POO aplicados
 
-### 7.1 Clases principales
-
-| Clase | Responsabilidad |
-| :--- | :--- |
-| `Estudiante` | Centro del sistema; guarda presupuestos, metas, actividades y reportes. |
-| `Presupuesto` | Límite mensual y lista de gastos (composición). |
-| `Gasto` | Monto, categoría, fecha y descripción. |
-| `Fecha` | Día, mes y año, con validación de fechas existentes. |
-| `MetaAcademica` | Meta con materia, fecha límite, progreso y lista de tareas (composición). |
-| `ElementoPlanificable` | Superclase abstracta de `Actividad` y `Tarea`, con id, título, descripción, estado y recordatorios. |
-| `Actividad` | Elemento con fecha y hora (herencia). |
-| `Tarea` | Elemento con fecha límite (herencia). |
-| `Recordatorio` | Alarma asociada a un elemento (composición). |
-| `ReporteMensual` | Resumen del mes con gráfico por categoría. |
-
-### 7.2 Conceptos de POO aplicados
 - **Encapsulamiento:** atributos privados y métodos públicos.
 - **Herencia:** `Actividad` y `Tarea` heredan de `ElementoPlanificable`.
-- **Polimorfismo:** una lista de elementos planificables que trata actividades y tareas de la misma forma.
-- **Composición:** un presupuesto es dueño de sus gastos, y una meta de sus tareas.
+- **Polimorfismo:** una misma lista trata actividades y tareas de la misma forma.
+- **Composición:** un presupuesto contiene sus gastos y una meta contiene sus tareas.
 - **Colecciones:** `ArrayList` para las listas y `HashMap` para los gastos por categoría.
-
-## 8. Definition of Done
-
-Una historia se considera terminada cuando:
-- El código está implementado con programación orientada a objetos.
-- Está integrada con el resto del programa.
-- Se probó el caso correcto y los casos de error.
-- No tiene errores críticos conocidos.
-- El código está actualizado en GitHub.
-- El Product Owner acepta la historia.
-
-## 9. Resultado esperado y hitos
-
-Al final de la semana 4, el estudiante puede controlar su presupuesto, registrar gastos, administrar metas y tareas, ver reportes mensuales y organizar actividades con recordatorios, todo en una aplicación integrada.
-
-| Semana | Hito | Estado |
-| :--- | :--- | :--- |
-| 1 | Presupuestos y gastos funcionando | Terminado |
-| 2 | Metas y tareas funcionando | Pendiente |
-| 3 | Reportes funcionando | Pendiente |
-| 4 | Aplicación integrada y probada | Pendiente |
