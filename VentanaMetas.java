@@ -33,7 +33,6 @@ public class VentanaMetas extends JFrame {
         setTitle("UnsaLife - Metas académicas y tareas");
         setSize(ANCHO, ALTO);
         setLayout(new BorderLayout());
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         crearContenido();
         actualizar();
         setLocationRelativeTo(null);
@@ -49,14 +48,13 @@ public class VentanaMetas extends JFrame {
         btnCrearMeta = new JButton("Crear meta");
 
         cmbMetas = new JComboBox<>();
-        cmbMetas.setPrototypeDisplayValue("META-1 | Título de ejemplo largo");
+
         txtTituloTarea = new JTextField(16);
         txtDescTarea = new JTextField(20);
         pfTarea = new PanelFecha(hoy, true);
         btnAgregarTarea = new JButton("Agregar tarea");
 
         cmbTareas = new JComboBox<>();
-        cmbTareas.setPrototypeDisplayValue("TAR-1 | Título de ejemplo largo (META-1)");
         btnCompletar = new JButton("Marcar como completada");
 
         chkSoloPendientes = new JCheckBox("Mostrar solo tareas pendientes");
@@ -124,6 +122,7 @@ public class VentanaMetas extends JFrame {
         btnCompletar.addActionListener(escucha);
         chkSoloPendientes.addActionListener(escucha);
     }
+
 
     private void crearMeta() {
         String titulo = txtTituloMeta.getText().trim();
@@ -201,6 +200,7 @@ public class VentanaMetas extends JFrame {
             Utilidades.mensaje(this, aviso);
         }
     }
+
 
     private void actualizar() {
         Estudiante est = sesion.getEstudiante();
