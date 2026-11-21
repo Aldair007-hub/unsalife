@@ -123,15 +123,11 @@ java Main
 
 Escribe tu nombre y tu correo y pulsa **Ingresar**. Aparece el menú principal con tu saludo, la fecha de hoy y el resumen vacío.
 
-![Ventana de inicio](img/paso-01-inicio.png)
-
 ### Paso 3: crear el presupuesto del mes
 
 Pulsa **Gastos y presupuestos**. En la sección 1 elige mes `11`, año `2026`, escribe el límite `300` y pulsa **Crear presupuesto**.
 
 **Resultado esperado:** aviso `Presupuesto PRE-1 creado.` y el detalle del presupuesto en el área de resultados.
-
-![Crear presupuesto](img/paso-02-presupuesto.png)
 
 ### Paso 4: registrar gastos
 
@@ -140,8 +136,6 @@ En la sección 2 elige la fecha de hoy, escribe el monto `250`, escribe la categ
 **Resultado esperado:** `Gasto GAS-1 registrado. Saldo restante: S/ 50.0` y un aviso de que ya usaste más del 80 % del presupuesto. La categoría queda guardada como `Comida`.
 
 Registra un segundo gasto: monto `20`, categoría `Transporte`. El saldo restante pasa a `S/ 30.0`.
-
-![Registrar gasto](img/paso-03-gasto.png)
 
 ### Paso 5: ver el detalle del presupuesto
 
@@ -157,8 +151,6 @@ En el menú principal pulsa **Metas académicas y tareas**.
 2. Sección 2: elige `META-1`, título `Lab 12`, fecha `30/11/2026`. Pulsa **Agregar tarea**.
 3. Repite con el título `Informe final` y la fecha `10/12/2026`.
 
-![Meta con tareas](img/paso-04-metas.png)
-
 ### Paso 7: completar una tarea
 
 En la sección 3 elige `TAR-1` y pulsa **Marcar como completada**.
@@ -169,8 +161,6 @@ En la sección 3 elige `TAR-1` y pulsa **Marcar como completada**.
 
 En el menú principal pulsa **Actividades**. Escribe el título `Estudiar para el examen`, elige la fecha y pulsa **Registrar actividad** (`Actividad registrada correctamente.`). Luego elige `ACT-1` en la lista y pulsa **Marcar como completada**. Pulsa **Volver**.
 
-![Actividades](img/paso-05-actividades.png)
-
 ### Paso 9: generar el reporte mensual
 
 Pulsa **Reportes mensuales**. Deja seleccionado **Generar reporte del mes**, elige mes `11` y año `2026`, deja marcada la casilla del gráfico y pulsa **Aceptar**.
@@ -178,8 +168,6 @@ Pulsa **Reportes mensuales**. Deja seleccionado **Generar reporte del mes**, eli
 **Resultado esperado:** total de gastos `S/ 270.0`, metas cumplidas `0`, actividades realizadas `1`, el presupuesto del mes y las barras por categoría: Comida `92.6%` y Transporte `7.4%`.
 
 Después elige **Ver reportes ya generados** y pulsa **Aceptar** para ver la lista.
-
-![Reporte mensual](img/paso-06-reporte.png)
 
 ### Paso 10: ver el resumen general
 
