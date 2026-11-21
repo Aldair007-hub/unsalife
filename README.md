@@ -1,6 +1,8 @@
 # UnsaLife - Gestor integral de vida universitaria
 
-Aplicación de consola en Java para controlar gastos, organizar actividades y recordatorios, administrar metas académicas y consultar reportes mensuales.
+**Versión 2: interfaz gráfica de usuario (Java Swing).**
+
+Aplicación de escritorio en Java para controlar gastos, administrar metas académicas con sus tareas, registrar actividades y consultar reportes mensuales. Todo se maneja con ventanas, botones y listas desplegables, sin escribir comandos.
 
 ---
 
@@ -8,8 +10,8 @@ Aplicación de consola en Java para controlar gastos, organizar actividades y re
 
 ### 1.1 Reglas generales de uso
 
-- Todo se maneja escribiendo el número de la opción y pulsando **Enter**.
-- En cualquier submenú, la opción `0` vuelve al menú anterior. En el menú principal, la opción `0` cierra el programa.
+- Todo se maneja con el **mouse y el teclado** dentro de ventanas. Cada módulo tiene su propia ventana y se cierra con el botón **Volver**.
+- Los resultados se muestran en un área de texto dentro de cada ventana, y los avisos y errores aparecen en **ventanas emergentes**.
 - **Los datos viven solo en la memoria:** el programa no guarda nada en archivos. Al cerrarlo se pierde todo lo que registraste, y la próxima vez empiezas de cero.
 - El programa asigna un **código automático** a cada elemento que creas. Los números suben de uno en uno:
 
@@ -20,243 +22,184 @@ Aplicación de consola en Java para controlar gastos, organizar actividades y re
   | Meta | `META-1` |
   | Tarea | `TAR-1` |
   | Actividad | `ACT-1` |
-  | Recordatorio | `REC-1` |
 
-  Cuando el programa te pida un código, escríbelo como aparece en pantalla (por ejemplo `META-1`). Las mayúsculas y minúsculas no importan en metas, tareas y actividades.
-- Las fechas se piden siempre en este orden: **mes, año y día**. El programa muestra el rango válido en cada pregunta, por ejemplo `Día (1-30)`. Cuando también pide hora, las pide después: hora (0-23) y minutos (0-59).
-- Escribe **solo números** en los menús y en los montos. Para decimales usa punto (`25.50`). Si escribes letras, el programa se cierra con un error.
+  Ya no hace falta escribir los códigos: las tareas y actividades pendientes se eligen de una lista desplegable.
+- Las **fechas se eligen en listas desplegables** (día, mes y año). El año se puede elegir entre tres años antes y cinco años después del actual. Si eliges un día que no existe (por ejemplo, 31 de febrero), el programa avisa y no guarda nada.
+- Los **montos** se escriben como número, con punto o coma para los decimales (`25.50` o `25,50`). Si escribes letras, un monto vacío o un valor menor o igual a cero, el programa muestra un aviso y no se cierra.
+- Cada área de resultados muestra **como máximo 20 líneas**. Si hay más, se conservan el encabezado y lo más reciente, y una línea intermedia indica cuántas líneas no se muestran.
 
-### 1.2 Menú principal
+### 1.2 Ventana de inicio
 
-Al iniciar, el programa pide tu nombre y tu correo, muestra la fecha de hoy (la toma de la computadora) y abre este menú:
+Al ejecutar el programa aparece una ventana que pide tu **nombre** y tu **correo**. Pulsa **Ingresar** (o Enter en el campo del correo). La fecha de hoy se toma automáticamente de la computadora.
 
-```
-1. Gastos y presupuestos
-2. Metas académicas y tareas
-3. Actividades y recordatorios
-4. Reportes mensuales
-5. Resumen general
-0. Salir
-```
+- Si dejas el nombre vacío, avisa: "Escribe tu nombre."
+- Si el correo no tiene `@` o es muy corto, avisa: "Escribe un correo válido".
 
-**Orden recomendado la primera vez:** primero crea un presupuesto (opción 1), luego registra gastos, después crea metas y tareas (opción 2), luego actividades y recordatorios (opción 3), y al final revisa los reportes (opción 4) y el resumen (opción 5).
+### 1.3 Menú principal
 
-### 1.3 Opción 1: Gastos y presupuestos
+Muestra tu nombre, la fecha de hoy, un **mensaje de estado con color** y un **resumen general**. A la derecha están los botones de cada módulo:
 
-```
-1. Crear presupuesto mensual
-2. Registrar un gasto
-3. Ver el detalle de un presupuesto
-4. Ver todos los presupuestos
-0. Volver
-```
+| Botón | Qué abre |
+| :--- | :--- |
+| Gastos y presupuestos | Ventana de gastos |
+| Metas académicas y tareas | Ventana de metas |
+| Actividades | Ventana de actividades |
+| Reportes mensuales | Ventana de reportes |
+| Actualizar resumen | Recalcula el resumen con los datos actuales |
+| Salir | Cierra el programa |
 
-- **Crear presupuesto mensual:** pide mes, año y el monto límite en soles. Solo se permite un presupuesto por mes.
-- **Registrar un gasto:** pide la fecha del gasto (mes, año y día), el monto, la categoría y una descripción (puede quedar vacía con Enter). Al terminar muestra el saldo restante.
+- **Resumen general:** tus datos, el presupuesto del mes actual (límite, gastado y saldo), cuántas metas tienes, cuántas tareas están pendientes y vencidas, cuántas actividades hay y cuántas siguen pendientes, y cuántos reportes generaste.
+- **Mensaje de estado:** aparece en **verde** ("Todo en orden por ahora.") o en **rojo** ("Atención: ...") cuando superaste el límite del presupuesto o tienes tareas vencidas.
+- El resumen no se actualiza solo: después de trabajar en otra ventana, pulsa **Actualizar resumen**.
+
+**Orden recomendado la primera vez:** primero crea un presupuesto, luego registra gastos, después crea metas y tareas, luego actividades, y al final revisa los reportes y el resumen.
+
+### 1.4 Ventana de gastos y presupuestos
+
+Tiene tres secciones en la parte superior y el área de resultados debajo:
+
+- **1. Crear presupuesto mensual:** elige mes y año, escribe el límite en soles y pulsa **Crear presupuesto**. Solo se permite un presupuesto por mes.
+- **2. Registrar gasto:** elige la fecha (día, mes y año), escribe el monto, elige o escribe una categoría y, si quieres, una descripción. Pulsa **Registrar gasto**.
   **Importante:** el gasto solo se registra si ya existe un presupuesto para el mes de esa fecha. Si no existe, el programa avisa que debes crearlo primero.
-- **Ver el detalle de un presupuesto:** pide mes y año, y muestra el límite, lo gastado con su porcentaje, el saldo, el estado y la lista de gastos con su fecha.
-- **Ver todos los presupuestos:** lista los presupuestos creados.
-- **Alertas automáticas:** cuando el gasto acumulado pasa el 80 % del límite, aparece un aviso. Si supera el límite, aparece una alerta.
-- **Las categorías se normalizan:** "comida" se guarda como "Comida", para que los gastos del mismo tipo se agrupen bien en el reporte.
+  La lista de categorías (Alimentación, Transporte, Ocio, Salud, Materiales, Otros) también permite **escribir una categoría nueva**. Las categorías se normalizan: "comida" se guarda como "Comida", para que los gastos del mismo tipo se agrupen bien en el reporte.
+- **3. Consultar presupuesto:** **Ver detalle del mes** muestra el límite, lo gastado con su porcentaje, el saldo y la lista de gastos del mes elegido. **Ver todos mis presupuestos** lista los presupuestos creados.
+- **Estado con color:** sobre el área de resultados, una línea indica si el presupuesto está **dentro del límite** (verde), si ya usaste **más del 80 %** (naranja) o si **superaste el límite** (rojo). Al registrar un gasto también aparece un aviso emergente con el saldo restante.
 
-### 1.4 Opción 2: Metas académicas y tareas
+### 1.5 Ventana de metas académicas y tareas
 
-```
-1. Crear meta académica
-2. Agregar tarea a una meta
-3. Ver metas y sus tareas
-4. Marcar tarea como completada
-0. Volver
-```
-
-- **Crear meta académica:** pide el título, la materia y la fecha límite de la meta.
-- **Agregar tarea a una meta:** primero lista las metas y pide el código de la meta. Luego pide el título de la tarea, la descripción (opcional) y su fecha límite. Si la tarea vence después de la fecha límite de la meta, el programa muestra una nota de aviso, pero igual la agrega. Necesitas tener al menos una meta creada.
-- **Ver metas y sus tareas:** muestra cada meta con su progreso en porcentaje y debajo sus tareas. Las tareas pendientes cuya fecha límite ya pasó aparecen marcadas con `[VENCIDA]`.
-- **Marcar tarea como completada:** pide el código de la meta y luego el de la tarea. Muestra el nuevo progreso de la meta (por ejemplo 50.0 % si completaste una de dos tareas). Cuando completas todas las tareas, el programa felicita porque la meta quedó cumplida.
+- **1. Nueva meta:** escribe el título y la materia, elige la fecha límite y pulsa **Crear meta**.
+- **2. Nueva tarea:** elige la meta en la lista desplegable, escribe el título de la tarea y una descripción (opcional), elige su fecha límite y pulsa **Agregar tarea**. Si la tarea vence después de la fecha límite de la meta, el programa muestra una nota de aviso, pero igual la agrega. Necesitas tener al menos una meta creada.
+- **3. Completar tarea:** elige una tarea pendiente en la lista y pulsa **Marcar como completada**. Muestra el nuevo progreso de la meta. Cuando completas todas las tareas, el programa felicita porque la meta quedó cumplida.
+- **Mostrar solo tareas pendientes:** la casilla filtra el listado y se aplica al instante.
+- **Listado:** cada meta aparece con su progreso en porcentaje y debajo sus tareas. Las tareas pendientes cuya fecha límite ya pasó aparecen marcadas con `[VENCIDA]`, y una línea en **rojo** indica cuántas hay. Si no hay ninguna, la línea aparece en **verde**.
 - El progreso de una meta es el porcentaje de sus tareas que están completadas.
 
-### 1.5 Opción 3: Actividades y recordatorios
+### 1.6 Ventana de actividades
 
-```
-1. Crear actividad
-2. Ver mis actividades
-3. Marcar actividad como completada
-4. Agregar recordatorio (a una actividad o tarea)
-5. Ver recordatorios y notificaciones
-0. Volver
-```
+- **Registrar actividad:** escribe el título, una descripción (opcional), elige la fecha (día, mes y año) y pulsa **Registrar actividad**.
+- **Marcar como completada:** elige una actividad pendiente en la lista y pulsa **Marcar como completada**. Las actividades completadas se cuentan en el reporte del mes de su fecha.
+- **Listado:** el área de resultados muestra todas las actividades con su fecha y su estado (Pendiente o Completada).
 
-- **Crear actividad:** pide el título, la descripción (opcional) y la fecha y hora (mes, año, día, hora y minutos).
-- **Ver mis actividades:** lista las actividades con su estado y cuántos recordatorios tiene cada una.
-- **Marcar actividad como completada:** pide el código de la actividad (por ejemplo `ACT-1`).
-- **Agregar recordatorio:** lista las actividades y tareas juntas, y pide el código de la que quieras (`ACT-1` o `TAR-1`). Luego pide el mensaje del recordatorio y la fecha y hora de la alarma. Los recordatorios sirven tanto para actividades como para tareas.
-- **Ver recordatorios y notificaciones:** muestra todos los recordatorios y, aparte, las notificaciones pendientes. Una notificación aparece cuando la hora de la alarma ya llegó y la actividad o tarea todavía no está completada. Si completas la actividad, su notificación deja de aparecer. Para ver una notificación en una prueba, pon una alarma con fecha y hora ya pasadas.
+### 1.7 Ventana de reportes mensuales
 
-### 1.6 Opción 4: Reportes mensuales
+Se elige una de dos opciones con botones de opción y se pulsa **Aceptar**:
 
-```
-1. Generar el reporte de un mes
-2. Ver los reportes generados
-0. Volver
-```
-
-- **Generar el reporte de un mes:** pide mes y año, y muestra el total de gastos, las metas cumplidas, las actividades realizadas, el presupuesto del mes con su saldo y un gráfico de barras hecho con texto, con los gastos por categoría y su porcentaje. Por ejemplo, con 250 soles en comida y 20 en transporte, comida ocupa casi toda la barra (92.6 %) y transporte una parte muy pequeña (7.4 %).
-- **Ver los reportes generados:** lista los reportes que ya generaste en esta sesión.
-
-### 1.7 Opción 5: Resumen general
-
-Muestra de una sola vez tus datos, la fecha de hoy, cuánto has gastado del presupuesto del mes actual, cuántas metas tienes, cuántas tareas están pendientes y cuántas vencidas, y cuántas actividades siguen pendientes. Sirve como tablero rápido de cómo vas.
+- **Generar reporte del mes:** elige mes y año. Muestra el total de gastos, las metas cumplidas, las actividades realizadas, el presupuesto del mes y, si dejas marcada la casilla **Incluir gráfico de gastos por categoría**, un gráfico de barras hecho con texto con el monto y el porcentaje de cada categoría. Por ejemplo, con 250 soles en comida y 20 en transporte, comida ocupa casi toda la barra (92.6 %) y transporte una parte muy pequeña (7.4 %).
+- **Ver reportes ya generados:** lista los reportes que generaste en esta sesión.
 
 ### 1.8 Validaciones de entrada
 
-Si un dato está fuera de rango, el programa lo dice y vuelve a preguntar hasta que sea válido:
+El programa revisa los datos antes de guardarlos y avisa con una ventana emergente si algo está mal:
 
 | Dato | Regla |
 | :--- | :--- |
-| Mes | Entre 1 y 12. Mensaje: "El mes debe estar entre 1 y 12." |
-| Año | Entre 2000 y 2100. |
-| Día | Debe existir en ese mes, considerando años bisiestos. Por ejemplo, en noviembre el programa responde "Ese mes tiene solo 30 días." |
-| Hora | Entre 0 y 23. |
-| Minutos | Entre 0 y 59. |
-| Monto | Mayor que cero. |
+| Monto y límite | Número mayor que cero. Se rechazan letras, campos vacíos y valores negativos o en cero. |
+| Fecha | El día debe existir en ese mes, considerando años bisiestos. |
+| Presupuesto | Solo uno por mes. |
+| Gasto | Debe existir el presupuesto del mes de la fecha elegida. La categoría no puede quedar vacía. |
+| Meta | El título y la materia son obligatorios. |
+| Tarea | Se necesita al menos una meta y el título es obligatorio. |
+| Actividad | El título es obligatorio. |
+| Inicio | El nombre es obligatorio y el correo debe tener `@`. |
 
 ---
 
 ## 2. Ejemplo paso a paso
 
-Este recorrido usa todas las funciones del programa. Escribe cada línea y pulsa Enter. Los datos de ejemplo usan noviembre de 2026; si lo pruebas en otro mes, cambia las fechas por las del mes actual.
+Este recorrido usa todas las funciones del programa. Los datos de ejemplo usan noviembre de 2026; si lo pruebas en otro mes, cambia las fechas por las del mes actual.
 
-### Paso 1: iniciar el programa
+### Paso 1: ejecutar el programa
+
+Abre la carpeta del proyecto en tu IDE y ejecuta `Main.java`. También puedes hacerlo desde la terminal, dentro de la carpeta:
 
 ```bash
+javac -encoding UTF-8 *.java
 java Main
 ```
 
-Cuando pida `Tu nombre:`, escribe tu nombre. Cuando pida `Tu correo:`, escribe tu correo. Verás el saludo, la fecha de hoy y el menú principal.
+> Los archivos no declaran `package`, así que deben permanecer juntos en la misma carpeta.
 
-<p align="center">
-  <img width="518" height="176" alt="Inicio del programa" src="https://github.com/user-attachments/assets/0cafb23d-17d6-4887-89ef-af968d32a0bb" />
-</p>
+### Paso 2: iniciar sesión
 
-### Paso 2: crear el presupuesto del mes
+Escribe tu nombre y tu correo y pulsa **Ingresar**. Aparece el menú principal con tu saludo, la fecha de hoy y el resumen vacío.
 
-Escribe `1` (Gastos y presupuestos), luego `1` (Crear presupuesto mensual). Responde: mes `11`, año `2026`, límite `300`.
+![Ventana de inicio](img/paso-01-inicio.png)
 
-<p align="center">
-  <img width="346" height="507" alt="Crear presupuesto" src="https://github.com/user-attachments/assets/71bb6410-82d2-4965-9eaa-4e12a0e73ada" />
-</p>
+### Paso 3: crear el presupuesto del mes
 
-**Resultado esperado:** `Presupuesto PRE-1 creado.`
+Pulsa **Gastos y presupuestos**. En la sección 1 elige mes `11`, año `2026`, escribe el límite `300` y pulsa **Crear presupuesto**.
 
-### Paso 3: registrar un gasto
+**Resultado esperado:** aviso `Presupuesto PRE-1 creado.` y el detalle del presupuesto en el área de resultados.
 
-Escribe `2` (Registrar un gasto). Responde: mes `11`, año `2026`, día `13`, monto `250`, categoría `comida`, descripción `almuerzo`.
+![Crear presupuesto](img/paso-02-presupuesto.png)
 
-<p align="center">
-  <img width="510" height="412" alt="Registrar gasto" src="https://github.com/user-attachments/assets/63be0471-952c-4807-af2b-c1553a4f9ee5" />
-</p>
+### Paso 4: registrar gastos
 
-**Resultado esperado:** `Gasto GAS-1 registrado. Saldo restante: S/ 50.0` y el aviso `ya usaste más del 80% de tu presupuesto`.
+En la sección 2 elige la fecha de hoy, escribe el monto `250`, escribe la categoría `comida` y la descripción `almuerzos del mes`. Pulsa **Registrar gasto**.
 
-### Paso 4: ver el detalle del presupuesto
+**Resultado esperado:** `Gasto GAS-1 registrado. Saldo restante: S/ 50.0` y un aviso de que ya usaste más del 80 % del presupuesto. La categoría queda guardada como `Comida`.
 
-Escribe `3` y responde mes `11`, año `2026`. Verás el límite (S/ 300), lo gastado (S/ 250, 83.3 %), el saldo y la lista con el gasto `GAS-1`. Escribe `0` para volver al menú principal.
+Registra un segundo gasto: monto `20`, categoría `Transporte`. El saldo restante pasa a `S/ 30.0`.
 
-<p align="center">
-  <img width="766" height="399" alt="Detalle del presupuesto" src="https://github.com/user-attachments/assets/dd8977d2-6479-4ebf-94f1-8866bfbaf6ad" />
-</p>
+![Registrar gasto](img/paso-03-gasto.png)
 
-### Paso 5: crear una meta con tareas
+### Paso 5: ver el detalle del presupuesto
 
-1. Escribe `2` (Metas académicas) y luego `1` (Crear meta). Responde: título `Proyecto final`, materia `POO`, fecha límite mes `12`, año `2026`, día `20`.
+En la sección 3 elige mes `11` y año `2026`, y pulsa **Ver detalle del mes**. Verás el límite (`S/ 300.0`), lo gastado (`S/ 270.0`, 90 %), el saldo y la lista de gastos. La línea de estado aparece en naranja.
 
-   <p align="center">
-     <img width="334" height="568" alt="Crear meta" src="https://github.com/user-attachments/assets/e6ed1a01-df26-49c3-87f6-165ea07edfa4" />
-   </p>
+Pulsa **Volver**.
 
-   **Resultado:** `Meta META-1 creada.`
+### Paso 6: crear una meta con tareas
 
-2. Escribe `2` (Agregar tarea). Código de la meta: `META-1`. Título `Entregar informe`, sin descripción (Enter), fecha límite mes `11`, año `2026`, día `25`.
+En el menú principal pulsa **Metas académicas y tareas**.
 
-   <p align="center">
-     <img width="692" height="403" alt="Agregar primera tarea" src="https://github.com/user-attachments/assets/5bf8119e-2b81-4aa3-8731-4644c0d88b88" />
-   </p>
+1. Sección 1: título `Aprobar DSOO`, materia `DSOO`, fecha límite `15/12/2026`. Pulsa **Crear meta** (`Meta META-1 creada.`).
+2. Sección 2: elige `META-1`, título `Lab 12`, fecha `30/11/2026`. Pulsa **Agregar tarea**.
+3. Repite con el título `Informe final` y la fecha `10/12/2026`.
 
-   **Resultado:** `Tarea TAR-1 agregada a META-1.`
+![Meta con tareas](img/paso-04-metas.png)
 
-3. Repite la opción `2` para agregar una segunda tarea, `Subir código`, con fecha límite mes `12`, año `2026`, día `5`.
+### Paso 7: completar una tarea
 
-   <p align="center">
-     <img width="687" height="409" alt="Agregar segunda tarea" src="https://github.com/user-attachments/assets/2e090e8e-a06a-4867-ae72-30f7e4bf17b0" />
-   </p>
+En la sección 3 elige `TAR-1` y pulsa **Marcar como completada**.
 
-### Paso 6: ver el progreso y completar una tarea
+**Resultado esperado:** `¡Tarea completada! Progreso de la meta: 50.0%`. Marca la casilla **Mostrar solo tareas pendientes** y verás que `TAR-1` desaparece del listado. Pulsa **Volver**.
 
-Escribe `3` para ver la meta con 0.0 % de progreso y sus dos tareas. Si alguna fecha límite ya pasó, verás `[VENCIDA]` junto a ella.
+### Paso 8: registrar una actividad
 
-<p align="center">
-  <img width="687" height="409" alt="Ver metas y tareas" src="https://github.com/user-attachments/assets/46a56f01-48f7-40b5-af09-8c7162ec4b0c" />
-</p>
+En el menú principal pulsa **Actividades**. Escribe el título `Estudiar para el examen`, elige la fecha y pulsa **Registrar actividad** (`Actividad registrada correctamente.`). Luego elige `ACT-1` en la lista y pulsa **Marcar como completada**. Pulsa **Volver**.
 
-Escribe `4`, código de meta `META-1` y código de tarea `TAR-1`.
+![Actividades](img/paso-05-actividades.png)
 
-<p align="center">
-  <img width="685" height="344" alt="Completar tarea" src="https://github.com/user-attachments/assets/b6e15f33-d5cf-4044-b0fe-9469827b04b3" />
-</p>
+### Paso 9: generar el reporte mensual
 
-**Resultado esperado:** `¡Tarea completada! Progreso de la meta: 50.0%`. Si completas también `TAR-2`, el programa felicita por cumplir la meta. Escribe `0` para volver.
+Pulsa **Reportes mensuales**. Deja seleccionado **Generar reporte del mes**, elige mes `11` y año `2026`, deja marcada la casilla del gráfico y pulsa **Aceptar**.
 
-### Paso 7: crear una actividad y un recordatorio
+**Resultado esperado:** total de gastos `S/ 270.0`, metas cumplidas `0`, actividades realizadas `1`, el presupuesto del mes y las barras por categoría: Comida `92.6%` y Transporte `7.4%`.
 
-1. Escribe `3` (Actividades y recordatorios) y luego `1` (Crear actividad). Responde: título `Examen POO`, sin descripción, fecha mes `11`, año `2026`, día `20`, hora `10`, minutos `30`.
+Después elige **Ver reportes ya generados** y pulsa **Aceptar** para ver la lista.
 
-   <p align="center">
-     <img width="460" height="635" alt="Crear actividad" src="https://github.com/user-attachments/assets/97f5cfce-f4bc-410a-8d3b-51d517e6d683" />
-   </p>
+![Reporte mensual](img/paso-06-reporte.png)
 
-   **Resultado:** `Actividad ACT-1 creada.`
+### Paso 10: ver el resumen general
 
-2. Escribe `4` (Agregar recordatorio). Código: `ACT-1`. Mensaje `Repasar clases`. Fecha de la alarma: mes `11`, año `2026`, día `1`, hora `8`, minutos `0` (una fecha ya pasada, para que se note la notificación).
+Pulsa **Volver** y, en el menú principal, **Actualizar resumen**. Verás el presupuesto del mes, las metas, las tareas pendientes, las actividades y el reporte generado.
 
-   <p align="center">
-     <img width="617" height="506" alt="Agregar recordatorio" src="https://github.com/user-attachments/assets/bf9aa2a7-3bcf-4cb1-84fa-c8055f4be610" />
-   </p>
+### Paso 11: salir
 
-   **Resultado:** `Recordatorio REC-1 agregado a ACT-1.`
-
-3. Escribe `5` (Ver recordatorios y notificaciones). Verás el recordatorio en la lista y, debajo, la notificación `RECORDATORIO ... Repasar clases`, porque la alarma ya llegó y la actividad sigue pendiente. Escribe `0` para volver.
-
-   <p align="center">
-     <img width="794" height="330" alt="Ver recordatorios y notificaciones" src="https://github.com/user-attachments/assets/fc2ac5b0-3f8b-495a-b988-72a022ef9404" />
-   </p>
-
-### Paso 8: generar el reporte mensual
-
-Escribe `4` (Reportes mensuales) y luego `1` (Generar el reporte de un mes). Responde mes `11`, año `2026`. Verás el total de gastos, las metas cumplidas, el saldo del presupuesto y el gráfico de barras por categoría. Escribe `0` para volver.
-
-<p align="center">
-  <img width="471" height="568" alt="Reporte mensual" src="https://github.com/user-attachments/assets/1efc791a-9901-4c45-9b81-d338c8d2b8ff" />
-</p>
-
-### Paso 9: ver el resumen general
-
-Escribe `5`. Verás tu nombre, la fecha de hoy, el gasto del mes (S/ 250 de S/ 300), el número de metas, las tareas pendientes y vencidas, y las actividades pendientes.
-
-<p align="center">
-  <img width="451" height="458" alt="Resumen general" src="https://github.com/user-attachments/assets/9aeab7bb-83c4-4a20-b778-9a47ccb4f33c" />
-</p>
-
-### Paso 10: salir
-
-Escribe `0`. El programa se despide con `Hasta pronto` y cierra. Recuerda que los datos no se guardan.
-
-<p align="center">
-  <img width="449" height="227" alt="Salir del programa" src="https://github.com/user-attachments/assets/4011c595-4b79-4071-a134-c1ad998a389e" />
-</p>
+Pulsa **Salir**. Recuerda que los datos se pierden al cerrar el programa.
 
 ### Prueba de errores recomendada
 
-Para comprobar las validaciones: al pedir un mes, escribe `13`; al pedir un día en noviembre, escribe `31`; al pedir un monto, escribe `0`. En los tres casos el programa debe avisar y volver a preguntar. Escribe letras solo si quieres ver el error conocido de `NumberFormatException`.
+Prueba estos casos para ver las validaciones:
+
+- Escribe `abc` como límite de presupuesto o como monto de un gasto.
+- Elige el día `31` y el mes `02` al registrar un gasto o una actividad.
+- Crea un segundo presupuesto para el mismo mes.
+- Registra un gasto en un mes que no tiene presupuesto.
+- Agrega una tarea sin haber creado ninguna meta.
+- Crea una tarea con fecha límite posterior a la de su meta (muestra una nota de aviso).
+- Crea una tarea con una fecha pasada y observa la marca `[VENCIDA]` y el mensaje en rojo.
 
 ---
 
@@ -264,7 +207,16 @@ Para comprobar las validaciones: al pedir un mes, escribe `13`; al pedir un día
 
 ```
 unsalife/
-├── Main.java                  # Menús y punto de entrada del programa
+├── Main.java                  # Punto de entrada: abre la ventana de inicio
+├── Sesion.java                # Estado compartido: estudiante, fecha de hoy y generador de ids
+├── Utilidades.java            # Apoyo común: lectura de montos, formato y área de resultados
+├── PanelFecha.java            # Panel reutilizable con listas de día, mes y año
+├── VentanaInicio.java         # Pide nombre y correo
+├── VentanaPrincipal.java      # Menú principal y resumen general
+├── VentanaGastos.java         # Presupuestos y gastos
+├── VentanaMetas.java          # Metas académicas y tareas
+├── VentanaActividades.java    # Actividades
+├── VentanaReportes.java       # Reportes mensuales
 ├── Estudiante.java            # Centro del sistema: presupuestos, metas, actividades y reportes
 ├── Fecha.java                 # Fecha propia con validación (incluye años bisiestos)
 ├── Presupuesto.java           # Límite mensual y lista de gastos
@@ -272,18 +224,51 @@ unsalife/
 ├── MetaAcademica.java         # Meta con lista de tareas y progreso
 ├── Tarea.java                 # Tarea con fecha límite (hereda de ElementoPlanificable)
 ├── ElementoPlanificable.java  # Superclase abstracta
-├── Actividad.java             # Actividad con fecha y hora (hereda de ElementoPlanificable)
-├── Recordatorio.java          # Alarma asociada a una actividad o tarea
+├── Actividad.java             # Actividad con fecha (hereda de ElementoPlanificable)
 ├── ReporteMensual.java        # Resumen del mes con gráfico por categoría
-└── img/                       # Diagrama de clases UML
+└── img/                       # Diagrama de clases UML y capturas
 ```
+
+Las clases del modelo (desde `Estudiante` hasta `ReporteMensual`) no usan Swing: solo las clases `Ventana...`, `PanelFecha` y `Utilidades` conocen la interfaz gráfica.
 
 ---
 
-## 4. Conceptos de POO aplicados
+## 4. Conceptos aplicados
+
+**Programación orientada a objetos**
 
 - **Encapsulamiento:** atributos privados y métodos públicos.
-- **Herencia:** `Actividad` y `Tarea` heredan de `ElementoPlanificable`.
+- **Herencia:** `Actividad` y `Tarea` heredan de `ElementoPlanificable`; las ventanas heredan de `JFrame` y `PanelFecha` hereda de `JPanel`.
 - **Polimorfismo:** una misma lista trata actividades y tareas de la misma forma.
 - **Composición:** un presupuesto contiene sus gastos y una meta contiene sus tareas.
-- **Colecciones:** `ArrayList` para las listas y `HashMap` para los gastos por categoría.
+- **Colecciones:** `ArrayList` para las listas y `HashMap` para los gastos por categoría y los contadores de códigos.
+
+**Interfaces gráficas y eventos**
+
+- **Componentes Swing:** `JFrame`, `JPanel`, `JLabel`, `JTextField`, `JTextArea`, `JButton`, `JComboBox`, `JCheckBox`, `JRadioButton` con `ButtonGroup` y `JOptionPane`.
+- **Distribución:** `BorderLayout`, `FlowLayout` y `GridLayout`, combinados con paneles anidados.
+- **Programación orientada a eventos:** cada ventana tiene una clase interior que implementa `ActionListener` y distingue el componente con `getSource()`.
+- **Color:** `Color` para resaltar estados (verde, naranja y rojo).
+
+---
+
+## 5. Cambios respecto a la versión 1 (consola)
+
+| Aspecto | Versión 1 (consola) | Versión 2 (GUI) |
+| :--- | :--- | :--- |
+| Entrada de datos | `Scanner` y menús numerados | Campos de texto, listas, casillas y botones |
+| Fechas | Se escribían mes, año y día | Se eligen en listas desplegables |
+| Códigos | Se escribían a mano | Se eligen de una lista |
+| Errores de entrada | El programa se cerraba si se escribían letras | Un aviso emergente y el programa sigue |
+| Salida | `System.out.println` | Áreas de texto y ventanas emergentes |
+| Actividades | Con fecha, hora y recordatorios | Solo con fecha; se retiró la clase `Recordatorio` |
+| Organización | Todo en `Main` | Una ventana por módulo y una clase de sesión |
+
+---
+
+## 6. Limitaciones
+
+- Los datos solo existen mientras la aplicación está abierta; no se usan archivos ni bases de datos.
+- Los reportes muestran barras hechas con texto, no gráficos visuales.
+- Las áreas de resultados no tienen barra de desplazamiento, por eso muestran como máximo 20 líneas.
+- No hay recordatorios ni notificaciones en esta versión.
