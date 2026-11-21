@@ -1,28 +1,26 @@
-import java.text.SimpleDateFormat;
-import java.util.Date;
 public class Actividad extends ElementoPlanificable {
 
-    private Date fechaHora;
+    private Fecha fecha;
 
-    public Actividad(String id, String titulo, String descripcion, Date fechaHora) {
+    public Actividad(String id, String titulo, String descripcion, Fecha fecha) {
         super(id, titulo, descripcion);
-        this.fechaHora = fechaHora;
+        this.fecha = fecha;
     }
 
-    public Date getFechaHora() {
-        return fechaHora;
+    public Fecha getFecha() {
+        return fecha;
     }
 
-    public void setFechaHora(Date fechaHora) {
-        this.fechaHora = fechaHora;
+    public void setFecha(Fecha fecha) {
+        this.fecha = fecha;
     }
 
     public int getMes() {
-        return Integer.parseInt(new SimpleDateFormat("MM").format(fechaHora));
+        return fecha.getMes();
     }
 
     public int getAnio() {
-        return Integer.parseInt(new SimpleDateFormat("yyyy").format(fechaHora));
+        return fecha.getAnio();
     }
 
     public String getTipo() {
@@ -31,7 +29,6 @@ public class Actividad extends ElementoPlanificable {
 
     public String toString() {
         return "[" + getTipo() + " " + getId() + "] " + getTitulo() + " | "
-                + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaHora) + " | "
-                + (isCompletada() ? "Completada" : "Pendiente");
+                + fecha + " | " + (isCompletada() ? "Completada" : "Pendiente");
     }
 }
