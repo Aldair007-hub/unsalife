@@ -125,10 +125,6 @@ public class VentanaMetas extends JFrame {
         chkSoloPendientes.addActionListener(escucha);
     }
 
-    // ------------------------------------------------------------------
-    // Operaciones (equivalen a crearMeta, agregarTarea, completarTarea de la v1)
-    // ------------------------------------------------------------------
-
     private void crearMeta() {
         String titulo = txtTituloMeta.getText().trim();
         String materia = txtMateria.getText().trim();
@@ -205,10 +201,6 @@ public class VentanaMetas extends JFrame {
             Utilidades.mensaje(this, aviso);
         }
     }
-
-    // ------------------------------------------------------------------
-    // Refresco de combos, listado y aviso de tareas vencidas
-    // ------------------------------------------------------------------
 
     private void actualizar() {
         Estudiante est = sesion.getEstudiante();
