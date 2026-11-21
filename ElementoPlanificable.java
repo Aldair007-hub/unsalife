@@ -1,12 +1,9 @@
-import java.util.ArrayList;
-
 public abstract class ElementoPlanificable {
 
     private String id;
     private String titulo;
     private String descripcion;
     private boolean completada;
-    private ArrayList<Recordatorio> recordatorios = new ArrayList<>();
 
     public ElementoPlanificable(String id, String titulo, String descripcion) {
         this.id = id;
@@ -42,30 +39,22 @@ public abstract class ElementoPlanificable {
     }
 
     public void marcarCompletada() {
-        this.completada = true;
-    }
-
-    public ArrayList<Recordatorio> getRecordatorios() {
-        return recordatorios;
-    }
-
-    public void agregarRecordatorio(Recordatorio r) {
-        recordatorios.add(r);
+        completada = true;
     }
 
     public String toString() {
-        return "[" + getTipo() + " " + id + "] " + titulo + " | " + (completada ? "Completada" : "Pendiente");
+        return "[" + getTipo() + " " + id + "] " + titulo + " | "
+                + (completada ? "Completada" : "Pendiente");
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object objeto) {
+        if (this == objeto) {
             return true;
         }
-        if (!(o instanceof ElementoPlanificable)) {
+        if (!(objeto instanceof ElementoPlanificable)) {
             return false;
         }
-        ElementoPlanificable otro = (ElementoPlanificable) o;
+        ElementoPlanificable otro = (ElementoPlanificable) objeto;
         return id.equals(otro.id);
     }
-
 }
