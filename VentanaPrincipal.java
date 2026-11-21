@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class VentanaPrincipal extends JFrame {
 
     private static final int ANCHO = 820;
