@@ -44,22 +44,22 @@ public class ReporteMensual {
         return actividadesRealizadas;
     }
 
-    public void generarGrafico() {
-        System.out.println("  Gastos por categoría - " + Fecha.textoMesAnio(mes, anio));
+    public String generarGrafico() {
+        String texto = "Gastos por categoría - " + Fecha.textoMesAnio(mes, anio) + "\n";
         if (gastosPorCategoria.isEmpty() || totalGastos <= 0) {
-            System.out.println("  (No hay gastos registrados en este mes)");
-            return;
+            return texto + "  (No hay gastos registrados en este mes)\n";
         }
         for (String categoria : gastosPorCategoria.keySet()) {
             double monto = gastosPorCategoria.get(categoria);
             double porcentaje = monto * 100.0 / totalGastos;
-            System.out.println("  " + categoria + " " + barra(porcentaje) + " S/ "
-                    + (Math.round(monto * 100) / 100.0) + " (" + (Math.round(porcentaje * 10) / 10.0) + "%)");
+            texto += "  " + categoria + "\t" + barra(porcentaje) + " S/ "
+                    + (Math.round(monto * 100) / 100.0) + " (" + (Math.round(porcentaje * 10) / 10.0) + "%)\n";
         }
+        return texto;
     }
 
  
-    private String barra(double porcentaje) {
+    public String barra(double porcentaje) {
         int llenos = (int) Math.round(porcentaje / 5);
         String barra = "[";
         for (int i = 0; i < 20; i++) {
@@ -75,6 +75,7 @@ public class ReporteMensual {
     public String toString() {
         return "REPORTE MENSUAL " + Fecha.textoMesAnio(mes, anio) + " (" + idReporte + ")\n"
                 + "  Total de gastos: S/ " + (Math.round(totalGastos * 100) / 100.0) + "\n"
-                + "  Metas cumplidas: " + metasCumplidas;
+                + "  Metas cumplidas: " + metasCumplidas + "\n"
+                + "  Actividades realizadas: " + actividadesRealizadas;
     }
 }
