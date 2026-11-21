@@ -2,11 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Menú principal (opciones 1 a 5 de la versión de consola) con el resumen general.
- *
- * INTEGRANTE 1
- */
+
 public class VentanaPrincipal extends JFrame {
 
     private static final int ANCHO = 820;
@@ -35,7 +31,6 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private void crearContenido() {
-        // --- Parte superior: saludo, fecha y estado general ---
         JPanel panelNorte = new JPanel(new GridLayout(3, 1));
         JLabel lblSaludo = new JLabel("  Hola, " + sesion.getEstudiante().getNombre());
         lblSaludo.setForeground(new Color(20, 60, 120));
@@ -46,11 +41,9 @@ public class VentanaPrincipal extends JFrame {
         panelNorte.add(lblEstado);
         add(panelNorte, BorderLayout.NORTH);
 
-        // --- Centro: resumen general ---
         txtResumen = Utilidades.crearAreaSalida();
         add(txtResumen, BorderLayout.CENTER);
 
-        // --- Derecha: botones del menú ---
         btnGastos = new JButton("Gastos y presupuestos");
         btnMetas = new JButton("Metas académicas y tareas");
         btnActividades = new JButton("Actividades");
@@ -76,7 +69,6 @@ public class VentanaPrincipal extends JFrame {
         btnSalir.addActionListener(escucha);
     }
 
-    /** Recalcula el resumen general (se llama al abrir y con el botón "Actualizar resumen"). */
     public void actualizarResumen() {
         Estudiante est = sesion.getEstudiante();
         Fecha hoy = sesion.getHoy();
@@ -87,7 +79,6 @@ public class VentanaPrincipal extends JFrame {
         sb = sb + ("RESUMEN GENERAL\n\n");
         sb = sb + ("Estudiante: ") + (est) + ("\n\n");
 
-        // Presupuesto del mes actual
         sb = sb + ("Presupuesto de ") + (Fecha.textoMesAnio(hoy.getMes(), hoy.getAnio())) + (":\n");
         Presupuesto p = est.buscarPresupuesto(hoy);
         if (p == null) {
@@ -102,7 +93,6 @@ public class VentanaPrincipal extends JFrame {
             }
         }
 
-        // Metas y tareas
         int tareasPendientes = 0;
         int tareasVencidas = 0;
         for (MetaAcademica m : est.getMetas()) {
@@ -123,7 +113,6 @@ public class VentanaPrincipal extends JFrame {
             detalleAlerta += "Tienes " + tareasVencidas + " tarea(s) vencida(s). ";
         }
 
-        // Actividades
         int actividadesPendientes = 0;
         for (Actividad a : est.getActividades()) {
             if (!a.isCompletada()) {
