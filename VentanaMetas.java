@@ -2,12 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Metas académicas y tareas (menuMetas de la versión de consola):
- * crear meta, agregar tarea, completar tarea y ver el listado.
- *
- * INTEGRANTE 3
- */
 public class VentanaMetas extends JFrame {
 
     private static final int ANCHO = 960;
