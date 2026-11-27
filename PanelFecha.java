@@ -11,6 +11,7 @@ public class PanelFecha extends JPanel {
     public PanelFecha(Fecha inicial, boolean conDia) {
         this.conDia = conDia;
         setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
+        setBackground(Main.COLOR_PANEL);
 
         cmbDia = new JComboBox<>(numeros(1, 31, 2));
         cmbMes = new JComboBox<>(numeros(1, 12, 2));

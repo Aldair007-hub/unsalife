@@ -7,8 +7,17 @@ public class Sesion {
     private Fecha hoy;
     private HashMap<String, Integer> contadores = new HashMap<>();
 
+    public Sesion() {
+        this.hoy = new Fecha(new Date());
+        this.estudiante = new Estudiante(generarId("EST"), "", "");
+    }
+
     public Sesion(String nombre, String correo) {
         this.hoy = new Fecha(new Date());
+        this.estudiante = new Estudiante(generarId("EST"), nombre, correo);
+    }
+
+    public void iniciarEstudiante(String nombre, String correo) {
         this.estudiante = new Estudiante(generarId("EST"), nombre, correo);
     }
 
