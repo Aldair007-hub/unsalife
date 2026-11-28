@@ -1,7 +1,8 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Estudiante {
+public class Estudiante implements Serializable {
 
     private String idEstudiante;
     private String nombre;
