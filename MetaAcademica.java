@@ -1,6 +1,7 @@
+import java.io.*;
 import java.util.ArrayList;
 
-public class MetaAcademica {
+public class MetaAcademica implements Serializable {
 
     private String idMeta;
     private String titulo;

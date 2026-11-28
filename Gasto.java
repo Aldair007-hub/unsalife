@@ -1,7 +1,8 @@
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Gasto {
+public class Gasto implements Serializable {
 
     private String idGasto;
     private double monto;

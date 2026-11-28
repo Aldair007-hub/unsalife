@@ -1,6 +1,7 @@
+import java.io.*;
 import java.util.HashMap;
 
-public class ReporteMensual {
+public class ReporteMensual implements Serializable {
 
     private String idReporte;
     private int mes;

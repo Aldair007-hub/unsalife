@@ -1,6 +1,7 @@
+import java.io.*;
 import java.util.ArrayList;
 
-public class Presupuesto {
+public class Presupuesto implements Serializable {
 
     private String idPresupuesto;
     private double montoLimite;

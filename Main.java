@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Main extends JFrame {
@@ -90,6 +93,15 @@ public class Main extends JFrame {
     private JTextField[] encabezadosReporte;
     private JTextField[][] celdasReporte;
     private static final int MAX_FILAS_REP = 10;
+    private JButton btnExportarRep;
+    private ReporteMensual ultimoReporte;
+    private JLabel lblArchivo;
+    private JButton btnHistorial;
+    private JFrame ventanaHistorial;
+    private JLabel lblResumenHist;
+    private JTextField[] celdasHistorial;
+    private JButton btnVolverHist;
+    private static final int MAX_FILAS_HIST = 15;
 
     public Main() {
         this.sesion = new Sesion();
@@ -103,6 +115,7 @@ public class Main extends JFrame {
         inicializarVentanaMetas();
         inicializarVentanaActividades();
         inicializarVentanaReportes();
+        inicializarVentanaHistorial();
         inicializarVentanaPrincipal();
         setVisible(true);
     }
@@ -185,6 +198,16 @@ public class Main extends JFrame {
         return texto.substring(0, corte);
     }
 
+    private boolean tieneCaracteresNoPermitidos(String texto) {
+        String prohibidos = "\\/:*?\"<>|";
+        for (int i = 0; i < texto.length(); i++) {
+            if (prohibidos.indexOf(texto.charAt(i)) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void mensaje(Component padre, String texto) {
         JOptionPane.showMessageDialog(padre, texto);
     }
@@ -222,12 +245,12 @@ public class Main extends JFrame {
 
     private void inicializarVentanaPrincipal() {
         ventanaPrincipal = new JFrame("UnsaLife - Menú principal");
-        ventanaPrincipal.setSize(940, 600);
+        ventanaPrincipal.setSize(940, 650);
         ventanaPrincipal.setLayout(new BorderLayout(10, 10));
         ventanaPrincipal.setDefaultCloseOperation(EXIT_ON_CLOSE);
         ventanaPrincipal.getContentPane().setBackground(COLOR_FONDO);
 
-        JPanel panelNorte = new JPanel(new GridLayout(3, 1, 0, 4));
+        JPanel panelNorte = new JPanel(new GridLayout(4, 1, 0, 4));
         panelNorte.setBackground(COLOR_PANEL);
 
         JPanel filaSaludo = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 4));
@@ -247,8 +270,15 @@ public class Main extends JFrame {
         lblEstadoPrincipal = new JLabel("Todo en orden por ahora.");
         panelEstadoPrincipal.add(lblEstadoPrincipal);
 
+        JPanel filaArchivo = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
+        filaArchivo.setBackground(COLOR_PANEL);
+        lblArchivo = new JLabel("Archivo de datos: (aún sin sesión)");
+        lblArchivo.setForeground(COLOR_SECUNDARIO);
+        filaArchivo.add(lblArchivo);
+
         panelNorte.add(filaSaludo);
         panelNorte.add(filaFecha);
+        panelNorte.add(filaArchivo);
         panelNorte.add(panelEstadoPrincipal);
         ventanaPrincipal.add(panelNorte, BorderLayout.NORTH);
 
@@ -298,6 +328,7 @@ public class Main extends JFrame {
         btnMetas = new JButton("Metas académicas y tareas");
         btnActividades = new JButton("Actividades");
         btnReportes = new JButton("Reportes mensuales");
+        btnHistorial = new JButton("Historial de acciones");
         btnActualizar = new JButton("Actualizar resumen");
         btnSalir = new JButton("Salir");
 
@@ -305,6 +336,7 @@ public class Main extends JFrame {
         estilizarBotonPrimario(btnMetas);
         estilizarBotonPrimario(btnActividades);
         estilizarBotonPrimario(btnReportes);
+        estilizarBotonSecundario(btnHistorial);
         estilizarBotonSecundario(btnActualizar);
         estilizarBotonSalir(btnSalir);
 
@@ -314,6 +346,7 @@ public class Main extends JFrame {
         panelBotones.add(btnMetas);
         panelBotones.add(btnActividades);
         panelBotones.add(btnReportes);
+        panelBotones.add(btnHistorial);
         panelBotones.add(btnActualizar);
         panelBotones.add(btnSalir);
         ventanaPrincipal.add(panelBotones, BorderLayout.EAST);
@@ -323,14 +356,31 @@ public class Main extends JFrame {
         btnMetas.addActionListener(escucha);
         btnActividades.addActionListener(escucha);
         btnReportes.addActionListener(escucha);
+        btnHistorial.addActionListener(escucha);
         btnActualizar.addActionListener(escucha);
         btnSalir.addActionListener(escucha);
 
         ventanaPrincipal.setLocationRelativeTo(null);
     }
 
+    private void guardarCambios(Component padre, String accion) {
+        boolean guardado = sesion.guardar();
+        sesion.registrarHistorial(accion);
+        if (guardado) {
+            lblArchivo.setText("Archivo de datos: " + sesion.getArchivoDatos()
+                    + "   |   Último guardado: " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+            lblArchivo.setForeground(COLOR_SECUNDARIO);
+        } else {
+            lblArchivo.setText("No se pudo guardar en " + sesion.getArchivoDatos());
+            lblArchivo.setForeground(Color.RED);
+            mensaje(padre, "No se pudieron guardar tus datos en el archivo " + sesion.getArchivoDatos()
+                    + ".\nRevisa que la carpeta del programa permita escribir archivos.");
+        }
+    }
+
     private void cargarDatosEstudiante() {
         Estudiante est = sesion.getEstudiante();
+        lblArchivo.setText("Archivo de datos: " + sesion.getArchivoDatos() + "   |   Guardado automático activado");
         lblSaludo.setText("Hola, " + est.getNombre() + " (" + est.getCorreo() + ")");
         lblFecha.setText("Fecha de hoy: " + sesion.getHoy() + "   |   Código: " + est.getIdEstudiante());
     }
@@ -636,6 +686,8 @@ public class Main extends JFrame {
         } else {
             Presupuesto p = new Presupuesto(sesion.generarId("PRE"), limite, fecha.getMes(), fecha.getAnio());
             est.crearPresupuesto(p);
+            guardarCambios(ventanaGastos, "Presupuesto " + p.getIdPresupuesto() + " creado para "
+                    + Fecha.textoMesAnio(fecha.getMes(), fecha.getAnio()) + " (límite " + dinero(limite) + ")");
             txtLimite.setText("");
             mensaje(ventanaGastos, "Presupuesto " + p.getIdPresupuesto() + " creado.");
             mostrarDetallePresupuesto(p);
@@ -672,6 +724,7 @@ public class Main extends JFrame {
 
         Gasto g = new Gasto(sesion.generarId("GAS"), monto, categoria, fecha, descripcion);
         est.registrarGasto(g);
+        guardarCambios(ventanaGastos, "Gasto " + g.getIdGasto() + " registrado: " + dinero(monto) + " en " + categoria);
 
         String aviso = "Gasto " + g.getIdGasto() + " registrado. Saldo restante: "
                 + dinero(p.calcularSaldoRestante());
@@ -967,6 +1020,7 @@ public class Main extends JFrame {
         } else {
             MetaAcademica m = new MetaAcademica(sesion.generarId("META"), titulo, materia, fecha);
             sesion.getEstudiante().crearMeta(m);
+            guardarCambios(ventanaMetas, "Meta " + m.getIdMeta() + " creada: " + titulo);
             txtTituloMeta.setText("");
             txtMateria.setText("");
             actualizarMetas();
@@ -992,6 +1046,7 @@ public class Main extends JFrame {
         } else {
             Tarea t = new Tarea(sesion.generarId("TAR"), titulo, descripcion, fechaLimite);
             meta.agregarTarea(t);
+            guardarCambios(ventanaMetas, "Tarea " + t.getId() + " agregada a " + meta.getIdMeta() + ": " + titulo);
             txtTituloTarea.setText("");
             txtDescTarea.setText("");
             actualizarMetas();
@@ -1024,6 +1079,7 @@ public class Main extends JFrame {
         } else {
             tarea.marcarCompletada();
             meta.actualizarProgreso();
+            guardarCambios(ventanaMetas, "Tarea " + tarea.getId() + " completada");
             actualizarMetas();
             String aviso = "¡Tarea completada! Progreso de la meta: " + (Math.round(meta.getProgreso() * 10) / 10.0) + "%";
             if (meta.estaCumplida()) {
@@ -1257,6 +1313,7 @@ public class Main extends JFrame {
             Actividad actividad = new Actividad(
                     sesion.generarId("ACT"), titulo, descripcion, fecha);
             sesion.getEstudiante().agregarActividad(actividad);
+            guardarCambios(ventanaActividades, "Actividad " + actividad.getId() + " registrada: " + titulo);
             txtTituloAct.setText("");
             txtDescripcionAct.setText("");
             actualizarActividades();
@@ -1273,6 +1330,7 @@ public class Main extends JFrame {
         Actividad actividad = sesion.getEstudiante().buscarActividad(id);
         if (actividad != null) {
             actividad.marcarCompletada();
+            guardarCambios(ventanaActividades, "Actividad " + actividad.getId() + " completada");
             actualizarActividades();
             mensaje(ventanaActividades, "Actividad completada.");
         }
@@ -1356,8 +1414,10 @@ public class Main extends JFrame {
         chkGrafico.setBackground(COLOR_PANEL);
 
         btnAceptarRep = new JButton("Aceptar");
+        btnExportarRep = new JButton("Exportar a .txt");
         btnVolverRep = new JButton("Volver");
         estilizarBotonPrimario(btnAceptarRep);
+        estilizarBotonSecundario(btnExportarRep);
         estilizarBotonSalir(btnVolverRep);
 
         JPanel panelSuperior = new JPanel(new GridLayout(2, 1, 0, 4));
@@ -1378,6 +1438,7 @@ public class Main extends JFrame {
         fila2.add(pfReporte);
         fila2.add(chkGrafico);
         fila2.add(btnAceptarRep);
+        fila2.add(btnExportarRep);
         panelSuperior.add(fila2);
 
         ventanaReportes.add(panelSuperior, BorderLayout.NORTH);
@@ -1423,6 +1484,7 @@ public class Main extends JFrame {
         rbGenerar.addActionListener(escucha);
         rbVer.addActionListener(escucha);
         btnAceptarRep.addActionListener(escucha);
+        btnExportarRep.addActionListener(escucha);
         btnVolverRep.addActionListener(escucha);
 
         ventanaReportes.setLocationRelativeTo(null);
@@ -1432,6 +1494,8 @@ public class Main extends JFrame {
         Fecha fecha = pfReporte.getFecha();
         Estudiante est = sesion.getEstudiante();
         ReporteMensual reporte = est.generarReporte(fecha);
+        ultimoReporte = reporte;
+        guardarCambios(ventanaReportes, "Reporte " + reporte.getIdReporte() + " generado");
         Presupuesto p = est.buscarPresupuesto(fecha);
 
         String estadoPres = "Sin presupuesto";
@@ -1486,7 +1550,7 @@ public class Main extends JFrame {
     }
 
     private void verReportes() {
-        lblResumenRep.setText("Historial de reportes generados en esta sesión.");
+        lblResumenRep.setText("Reportes generados y guardados.");
         String[] titulos = {"Código", "Período", "Total Gastos", "Metas Cumplidas", "Actividades Realizadas"};
         for (int c = 0; c < 5; c++) {
             encabezadosReporte[c].setText(titulos[c]);
@@ -1518,6 +1582,80 @@ public class Main extends JFrame {
         }
     }
 
+    private void exportarReporte() {
+        if (ultimoReporte == null) {
+            mensaje(ventanaReportes, "Primero genera un reporte del mes (opción \"Generar reporte del mes\" y Aceptar).");
+            return;
+        }
+        String archivo = sesion.getArchivoReporte(ultimoReporte);
+        if (sesion.exportarReporte(ultimoReporte)) {
+            sesion.registrarHistorial("Reporte " + ultimoReporte.getIdReporte() + " exportado a " + archivo);
+            mensaje(ventanaReportes, "Reporte exportado en el archivo:\n" + archivo);
+        } else {
+            mensaje(ventanaReportes, "No se pudo escribir el archivo " + archivo + ".");
+        }
+    }
+
+    private void inicializarVentanaHistorial() {
+        ventanaHistorial = new JFrame("UnsaLife - Historial de acciones");
+        ventanaHistorial.setSize(920, 540);
+        ventanaHistorial.setLayout(new BorderLayout(8, 8));
+        ventanaHistorial.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        ventanaHistorial.getContentPane().setBackground(COLOR_FONDO);
+
+        JPanel franjaResumen = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 6));
+        franjaResumen.setBackground(COLOR_PANEL);
+        lblResumenHist = new JLabel("Aún no hay acciones registradas.");
+        lblResumenHist.setForeground(COLOR_PRIMARIO);
+        franjaResumen.add(lblResumenHist);
+        ventanaHistorial.add(franjaResumen, BorderLayout.NORTH);
+
+        JPanel panelTabla = new JPanel(new GridLayout(MAX_FILAS_HIST + 1, 1, 2, 2));
+        panelTabla.setBackground(COLOR_FONDO);
+        panelTabla.add(crearEncabezadoTabla("Fecha y hora  |  Acción"));
+        celdasHistorial = new JTextField[MAX_FILAS_HIST];
+        for (int f = 0; f < MAX_FILAS_HIST; f++) {
+            Color fondo = (f % 2 == 0) ? Color.WHITE : COLOR_FILA_IMPAR;
+            celdasHistorial[f] = crearCeldaTabla("", fondo, Color.BLACK, JTextField.LEFT);
+            celdasHistorial[f].setVisible(false);
+            panelTabla.add(celdasHistorial[f]);
+        }
+        ventanaHistorial.add(panelTabla, BorderLayout.CENTER);
+
+        btnVolverHist = new JButton("Volver");
+        estilizarBotonSalir(btnVolverHist);
+        JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 6));
+        panelSur.setBackground(COLOR_FONDO);
+        panelSur.add(btnVolverHist);
+        ventanaHistorial.add(panelSur, BorderLayout.SOUTH);
+
+        btnVolverHist.addActionListener(new EscuchaHistorial());
+
+        ventanaHistorial.setLocationRelativeTo(null);
+    }
+
+    private void actualizarHistorial() {
+        ArrayList<String> lineas = sesion.leerHistorial();
+        int total = lineas.size();
+        if (total == 0) {
+            lblResumenHist.setText("Aún no hay acciones registradas.");
+        } else {
+            int mostradas = Math.min(total, MAX_FILAS_HIST);
+            lblResumenHist.setText("Mostrando las últimas " + mostradas + " de " + total
+                    + " acciones (la más reciente arriba). Archivo: " + sesion.getArchivoHistorial());
+        }
+        int fila = 0;
+        for (int i = total - 1; i >= 0 && fila < MAX_FILAS_HIST; i--) {
+            celdasHistorial[fila].setText("  " + lineas.get(i));
+            celdasHistorial[fila].setVisible(true);
+            fila++;
+        }
+        for (int f = fila; f < MAX_FILAS_HIST; f++) {
+            celdasHistorial[f].setText("");
+            celdasHistorial[f].setVisible(false);
+        }
+    }
+
     private class EscuchaIngresar implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String nombre = txtNombre.getText().trim();
@@ -1526,9 +1664,30 @@ public class Main extends JFrame {
                 JOptionPane.showMessageDialog(Main.this, "Escribe tu nombre.");
             } else if (correo.indexOf('@') < 1 || correo.length() < 5) {
                 JOptionPane.showMessageDialog(Main.this, "Escribe un correo válido (ej. nombre@unsa.edu.pe).");
+            } else if (tieneCaracteresNoPermitidos(correo)) {
+                JOptionPane.showMessageDialog(Main.this, "El correo no puede contener los caracteres \\ / : * ? \" < > |");
             } else {
-                sesion.iniciarEstudiante(nombre, correo);
-                cargarDatosEstudiante();
+                int resultado = sesion.cargar(correo);
+                if (resultado == 2) {
+                    JOptionPane.showMessageDialog(Main.this, "No se pudo leer el archivo " + sesion.archivoDatos(correo)
+                            + ".\nEstá dañado o es de otra versión del programa.\n"
+                            + "Bórralo para empezar de cero o usa otro correo.");
+                    return;
+                }
+                if (resultado == 0) {
+                    Estudiante est = sesion.getEstudiante();
+                    cargarDatosEstudiante();
+                    sesion.registrarHistorial("Inicio de sesión");
+                    mensaje(Main.this, "Bienvenido de nuevo, " + est.getNombre() + ".\nSe cargaron tus datos guardados:\n"
+                            + "  Presupuestos: " + est.getPresupuestos().size() + "\n"
+                            + "  Metas: " + est.getMetas().size() + "\n"
+                            + "  Actividades: " + est.getActividades().size() + "\n"
+                            + "  Reportes: " + est.getReportes().size());
+                } else {
+                    sesion.iniciarEstudiante(nombre, correo);
+                    cargarDatosEstudiante();
+                    guardarCambios(Main.this, "Cuenta creada para " + nombre);
+                }
                 actualizarResumenPrincipal();
                 ventanaPrincipal.setVisible(true);
                 setVisible(false);
@@ -1549,6 +1708,9 @@ public class Main extends JFrame {
                 ventanaActividades.setVisible(true);
             } else if (e.getSource() == btnReportes) {
                 ventanaReportes.setVisible(true);
+            } else if (e.getSource() == btnHistorial) {
+                actualizarHistorial();
+                ventanaHistorial.setVisible(true);
             } else if (e.getSource() == btnActualizar) {
                 actualizarResumenPrincipal();
             } else if (e.getSource() == btnSalir) {
@@ -1617,8 +1779,18 @@ public class Main extends JFrame {
                 } else {
                     verReportes();
                 }
+            } else if (e.getSource() == btnExportarRep) {
+                exportarReporte();
             } else if (e.getSource() == btnVolverRep) {
                 ventanaReportes.setVisible(false);
+            }
+        }
+    }
+
+    private class EscuchaHistorial implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == btnVolverHist) {
+                ventanaHistorial.setVisible(false);
             }
         }
     }

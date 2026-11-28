@@ -1,4 +1,5 @@
-public abstract class ElementoPlanificable {
+import java.io.*;
+public abstract class ElementoPlanificable implements Serializable {
 
     private String id;
     private String titulo;
