@@ -1,0 +1,7 @@
+# Datos personales generados por el programa (version 3, archivos)
+*.dat
+historial_*.txt
+reporte_*.txt
+
+# Compilados
+*.class
